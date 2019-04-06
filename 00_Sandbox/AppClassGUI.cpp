@@ -141,16 +141,34 @@ void Application::DrawGUI(void)
 	//Calculate the window size to know how to draw
 	NewFrame();
 
-	static ImVec4 v4Color = ImColor(255, 0, 0);
+	static ImVec4 v4Color = ImColor(78, 142, 178);
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar;
+
 	//About
 	{
 		ImGui::SetNextWindowPos(ImVec2(1, 1), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 42), ImGuiSetCond_FirstUseEver);
+
 		String sAbout = m_pSystem->GetAppName() + " - About";
+        String sScore = "Score: " + std::to_string(m_iSheepSaved);
+
 		ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
 		{
 			ImGui::TextColored(v4Color, m_sProgrammer.c_str());
+            ImGui::Separator();
+            ImGui::Text("Shepherd: The Game");
+            ImGui::Text("Objective:\n");
+            ImGui::TextWrapped("    Herd as many sheep as you can into the pen before they are eaten by wolves!");
+            ImGui::Separator();
+            ImGui::Text("How to Play:\n");
+            ImGui::TextWrapped("    Herd sheep by moving near them, they will move directly away from you!");
+            ImGui::TextWrapped("    Temporarily scare wolves away by barking near them!");
+            ImGui::Separator();
+            ImGui::Text("Controls:\n");
+            ImGui::Text("    Movment: WASD");
+            ImGui::Text("    Bark: Space");
+            ImGui::Separator();
+            ImGui::Text(sScore.c_str());
 		}
 		ImGui::End();
 	}
@@ -159,7 +177,7 @@ void Application::DrawGUI(void)
 	if (m_bGUI_Main)
 	{
 		static float f = 0.0f;
-		ImGui::SetNextWindowPos(ImVec2(1, 44), ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowPos(ImVec2(45, 10), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 107), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowCollapsed(false, ImGuiSetCond_FirstUseEver);
 		String sWindowName = m_pSystem->GetAppName() + " - Main";

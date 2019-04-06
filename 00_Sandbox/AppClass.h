@@ -26,6 +26,9 @@ private:
 	bool m_bGUI_Test = false; //show Test GUI window?
 	bool m_bGUI_Controller = false; //show Controller GUI window?
 
+    bool m_bBarked = false;
+    uint m_iSheepSaved = 0;
+
 	uint m_uRenderCallCount = 0; //count of render calls per frame
 	uint m_uControllerCount = 0; //count of controllers connected
 

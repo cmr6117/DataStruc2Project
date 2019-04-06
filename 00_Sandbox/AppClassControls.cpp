@@ -111,7 +111,10 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
-	case sf::Keyboard::Add:
+    case sf::Keyboard::Space:
+        m_bBarked = false; // when space is released, reset barked to false - TODO: bark cooldown check later on
+        break;
+	/*case sf::Keyboard::Add:
 		++m_uActCont;
 		m_uActCont %= 8;
 		if (m_uControllerCount > 0)
@@ -136,7 +139,7 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 					m_uActCont = 7;
 			}
 		}
-		break;
+		break;*/
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
 		m_bModifier = false;
@@ -401,6 +404,50 @@ void Application::ProcessKeyboard(void)
 	This is used for things that are continuously happening,
 	for discreet on/off use ProcessKeyboardPressed/Released
 	*/
+#pragma region Player Input
+
+    // RW 4/6
+    // following comments made provided we don't base movement off camera perspective (if we allow rotating)
+    // and that it's oriented just as the world is (so it's not confusing for the player)
+    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    {
+        std::cout << "W pressed";
+        // translate player in z, move them north
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    {
+        std::cout << "S pressed";
+        // translate player in -z, move them south
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    {
+        std::cout << "A pressed";
+        // translate player in -x, move them west
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    {
+        std::cout << "D pressed";
+        // translate player in x, move them east
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        // we don't want to bark every frame space is held down, so we'll have a flag
+        // that resets onKeyReleased (as seen above)
+        if (!m_bBarked)
+        {
+            // bark
+            m_bBarked = true;
+            std::cout << "Barked!";
+        }
+    }
+
+#pragma endregion
+
 #pragma region Camera Position
 	bool bMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
@@ -410,16 +457,18 @@ void Application::ProcessKeyboard(void)
 	if (bMultiplier)
 		fMultiplier = 5.0f;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    // RW 4/6 
+    // changed camera movement to arrow keys for now, might remove camera control entirely.
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		m_pCameraMngr->MoveForward(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		m_pCameraMngr->MoveSideways(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))

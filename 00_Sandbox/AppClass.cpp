@@ -2,7 +2,7 @@
 using namespace Simplex;
 void Application::InitVariables(void)
 {
-	m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Team Shepherd";
 
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(
