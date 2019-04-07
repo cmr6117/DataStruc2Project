@@ -29,6 +29,10 @@ void Application::InitVariables(void)
 
 		//m_pEntityMngr->SetMass(i+1);
 	}
+
+	//Mike - 4/7
+	//Adding player entity to world
+	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
 }
 void Application::Update(void)
 {
@@ -40,6 +44,11 @@ void Application::Update(void)
 
 	//Is the first person camera active?
 	CameraRotation();
+	
+	//Mike - 4/7
+	//Set model matrix to the player
+	matrix4 mPlayer = glm::translate(m_v3PlayerPos) * IDENTITY_M4;
+	m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
 	//Update Entity Manager
 	m_pEntityMngr->Update();
