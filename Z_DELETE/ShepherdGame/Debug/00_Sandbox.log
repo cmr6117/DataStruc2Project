@@ -1,21 +1,21 @@
-﻿  AppClassGUI.cpp
-  00_Sandbox.vcxproj -> C:\Github\dsa2shepherd\Z_DELETE\ShepherdGame_d.exe
+﻿  AppClass.cpp
+  00_Sandbox.vcxproj -> D:\Profiles\cmr6117\source\repos\DataStruc2Project\Z_DELETE\ShepherdGame_d.exe
   Copying Shaders...
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Basic-Instanced.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Basic.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Basic.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\BasicColor.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\BasicColor.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Line.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Line.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Minimal.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Minimal.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\MinimalRed.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Simplex.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Simplex.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Skybox.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Skybox.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Text.fs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Text.vs
-  C:\Github\dsa2shepherd\include\Simplex\Shaders\Wireframe.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Basic-Instanced.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Basic.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Basic.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\BasicColor.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\BasicColor.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Line.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Line.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Minimal.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Minimal.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\MinimalRed.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Simplex.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Simplex.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Skybox.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Skybox.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Text.fs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Text.vs
+  D:\Profiles\cmr6117\source\repos\DataStruc2Project\include\Simplex\Shaders\Wireframe.fs
   17 File(s) copied

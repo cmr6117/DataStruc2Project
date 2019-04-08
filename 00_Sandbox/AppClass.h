@@ -20,6 +20,7 @@ class Application
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
 
 private:
+	Mesh* m_discworld = nullptr;
 	static ImGuiObject gui; //GUI object
 	bool m_bGUI_Main = true; //show Main GUI window?
 	bool m_bGUI_Console = false; //show Credits GUI window?
