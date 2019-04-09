@@ -20,6 +20,7 @@ class Application
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
 
 private:
+	Mesh* m_discworld = nullptr;
 	static ImGuiObject gui; //GUI object
 	bool m_bGUI_Main = true; //show Main GUI window?
 	bool m_bGUI_Console = false; //show Credits GUI window?
@@ -29,6 +30,7 @@ private:
     bool m_bBarked = false;
     uint m_iSheepSaved = 0;
 
+	vector3 m_v3PlayerPos = ZERO_V3;
 	uint m_uRenderCallCount = 0; //count of render calls per frame
 	uint m_uControllerCount = 0; //count of controllers connected
 
@@ -37,6 +39,7 @@ private:
 	bool m_bFocused = true; //is the window focused?
 
 	float m_fMovementSpeed = 0.1f; //how fast the camera will move
+	float m_fPlayerSpeed = 0.08f; //how fast the player will move
 
 	vector3 m_v3Mouse = vector3(); //position of the mouse in the window
 	bool m_bFPC = false;// First Person Camera flag

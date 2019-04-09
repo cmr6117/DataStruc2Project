@@ -413,25 +413,29 @@ void Application::ProcessKeyboard(void)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         std::cout << "W pressed";
-        // translate player in z, move them north
+        // translate player in -z, move them north
+		m_v3PlayerPos.z -= m_fPlayerSpeed;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         std::cout << "S pressed";
-        // translate player in -z, move them south
+        // translate player in z, move them south
+		m_v3PlayerPos.z += m_fPlayerSpeed;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         std::cout << "A pressed";
         // translate player in -x, move them west
+		m_v3PlayerPos.x -= m_fPlayerSpeed;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         std::cout << "D pressed";
         // translate player in x, move them east
+		m_v3PlayerPos.x += m_fPlayerSpeed;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

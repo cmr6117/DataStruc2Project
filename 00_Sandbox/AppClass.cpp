@@ -29,6 +29,16 @@ void Application::InitVariables(void)
 
 		//m_pEntityMngr->SetMass(i+1);
 	}
+
+	//Christian - 4/7
+	//Discworld
+	m_discworld = new Mesh();
+	m_discworld->GenerateCylinder(100.0f, 1.0f, 15, vector3(0.5f, 0.9f, 0.5f));
+
+	//Mike - 4/7
+	//Adding player entity to world
+	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
+	
 }
 void Application::Update(void)
 {
@@ -40,12 +50,18 @@ void Application::Update(void)
 
 	//Is the first person camera active?
 	CameraRotation();
+	
+	//Mike - 4/7
+	//Set model matrix to the player
+	matrix4 mPlayer = glm::translate(m_v3PlayerPos) * IDENTITY_M4;
+	m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
 	//Update Entity Manager
 	m_pEntityMngr->Update();
 
 	//Add objects to render list
 	m_pEntityMngr->AddEntityToRenderList(-1, true);
+	
 }
 void Application::Display(void)
 {
@@ -57,7 +73,11 @@ void Application::Display(void)
 		
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
-	
+
+	//Christian - 4/7
+	//Render disc
+	m_discworld->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), glm::translate(vector3(0.0f, -1.0f, 0.0f)));
+
 	//clear the render list
 	m_pMeshMngr->ClearRenderList();
 	
