@@ -2,6 +2,8 @@
 using namespace Simplex;
 void Application::InitVariables(void)
 {
+	srand(time(NULL));
+
 	m_sProgrammer = "Team Shepherd";
 
 	//Set the position and target of the camera
@@ -12,20 +14,33 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
-															 
-	m_pEntityMngr = MyEntityManager::GetInstance(); //Initialize the entity manager
-	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "Steve");
-	m_pEntityMngr->UsePhysicsSolver();
 
-	for (int i = 0; i < 100; i++)
+	m_pEntityMngr = MyEntityManager::GetInstance(); //Initialize the entity manager
+	//m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves");
+	//m_pEntityMngr->UsePhysicsSolver();
+
+	for (int i = 0; i < 20; i++)
 	{
-		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Cube_" + std::to_string(i));
-		vector3 v3Position = vector3(glm::sphericalRand(12.0f));
-		v3Position.y = 0.0f;
+		m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(i));
+		vector3 v3Position = vector3(rand() % 25 - 10 + 15, 0.0f, rand() % 25 - 10);
 		matrix4 m4Position = glm::translate(v3Position);
-		m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
-		m_pEntityMngr->UsePhysicsSolver(true);
-		m_pEntityMngr->SetMass(1.5);
+		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
+		m_pEntityMngr->SetModelMatrix(m4Position);
+		//m_pEntityMngr->UsePhysicsSolver(true);
+		//m_pEntityMngr->SetMass(1.5);
+
+		//m_pEntityMngr->SetMass(i+1);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves_" + std::to_string(i));
+		vector3 v3Position = vector3(rand() % 25 - 10 - 15, 0.0f, rand() % 25 - 10);
+		matrix4 m4Position = glm::translate(v3Position);
+		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
+		m_pEntityMngr->SetModelMatrix(m4Position);
+		//m_pEntityMngr->UsePhysicsSolver(true);
+		//m_pEntityMngr->SetMass(1.5);
 
 		//m_pEntityMngr->SetMass(i+1);
 	}
@@ -38,7 +53,7 @@ void Application::InitVariables(void)
 	//Mike - 4/7
 	//Adding player entity to world
 	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
-	
+
 }
 void Application::Update(void)
 {
