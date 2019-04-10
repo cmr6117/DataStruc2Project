@@ -1,4 +1,10 @@
-﻿  AppClassControls.cpp
+﻿  AppClass.cpp
+c:\github\dsa2shepherd\00_sandbox\appclass.cpp(5): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  AppClassControls.cpp
+  AppClassGUI.cpp
+  AppClassMain.cpp
+  Main.cpp
+  Generating Code...
   00_Sandbox.vcxproj -> C:\Github\dsa2shepherd\Z_DELETE\ShepherdGame_d.exe
   Copying Shaders...
   C:\Github\dsa2shepherd\include\Simplex\Shaders\Basic-Instanced.vs

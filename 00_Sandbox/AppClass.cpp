@@ -1,5 +1,6 @@
 #include "AppClass.h"
 using namespace Simplex;
+
 void Application::InitVariables(void)
 {
 	srand(time(NULL));
@@ -54,11 +55,14 @@ void Application::InitVariables(void)
 	//Adding player entity to world
 	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
 
+    m_iClock = m_pSystem->GenClock();
 }
+
 void Application::Update(void)
 {
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
+    m_fDeltaTime = m_pSystem->GetDeltaTime(m_iClock);
 
 	//Is the arcball active?
 	ArcBall();
@@ -75,9 +79,9 @@ void Application::Update(void)
 	m_pEntityMngr->Update();
 
 	//Add objects to render list
-	m_pEntityMngr->AddEntityToRenderList(-1, true);
-	
+    m_pEntityMngr->AddEntityToRenderList(-1, true);
 }
+
 void Application::Display(void)
 {
 	// Clear the screen

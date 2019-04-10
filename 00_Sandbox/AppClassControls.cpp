@@ -409,29 +409,31 @@ void Application::ProcessKeyboard(void)
     // RW 4/6
     // following comments made provided we don't base movement off camera perspective (if we allow rotating)
     // and that it's oriented just as the world is (so it's not confusing for the player)
+
+    float step = m_fPlayerSpeed * m_fDeltaTime;
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         // translate player in -z, move them north
-		m_v3PlayerPos.z -= m_fPlayerSpeed;
+		m_v3PlayerPos.z -= step;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         // translate player in z, move them south
-		m_v3PlayerPos.z += m_fPlayerSpeed;
+		m_v3PlayerPos.z += step;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         // translate player in -x, move them west
-		m_v3PlayerPos.x -= m_fPlayerSpeed;
+		m_v3PlayerPos.x -= step;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         // translate player in x, move them east
-		m_v3PlayerPos.x += m_fPlayerSpeed;
+		m_v3PlayerPos.x += step;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

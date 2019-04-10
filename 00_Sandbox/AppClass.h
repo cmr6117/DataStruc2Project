@@ -30,16 +30,19 @@ private:
     bool m_bBarked = false;
     uint m_iSheepSaved = 0;
 
+    uint m_iClock;
+    float m_fDeltaTime;
+
 	vector3 m_v3PlayerPos = ZERO_V3;
 	uint m_uRenderCallCount = 0; //count of render calls per frame
 	uint m_uControllerCount = 0; //count of controllers connected
 
-	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	String m_sProgrammer = "Team Shepherd";
 
 	bool m_bFocused = true; //is the window focused?
 
 	float m_fMovementSpeed = 0.1f; //how fast the camera will move
-	float m_fPlayerSpeed = 0.08f; //how fast the player will move
+	float m_fPlayerSpeed = 2.0f; //how fast the player will move
 
 	vector3 m_v3Mouse = vector3(); //position of the mouse in the window
 	bool m_bFPC = false;// First Person Camera flag
