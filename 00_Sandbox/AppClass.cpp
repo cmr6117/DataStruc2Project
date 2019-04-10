@@ -56,6 +56,7 @@ void Application::InitVariables(void)
 	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
 
     m_iClock = m_pSystem->GenClock();
+    m_pSystem->StartClock(m_iClock);
 }
 
 void Application::Update(void)
