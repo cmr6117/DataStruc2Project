@@ -49,7 +49,7 @@ void Application::InitVariables(void)
 	//Christian - 4/7
 	//Discworld
 	m_discworld = new Mesh();
-	m_discworld->GenerateCylinder(100.0f, 1.0f, 15, vector3(0.5f, 0.9f, 0.5f));
+	m_discworld->GenerateCylinder(35.0f, 1.0f, 15, vector3(0.5f, 0.9f, 0.5f));
 
 	//Mike - 4/7
 	//Adding player entity to world
