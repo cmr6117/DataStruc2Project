@@ -23,6 +23,10 @@ class MyEntity
 	Model* m_pModel = nullptr; //Model associated with this MyEntity
 	MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this MyEntity
 
+    // RW 4/13
+    float m_fRadiusRepel = 0.0f; // the radius of denoting the zone of repel against incoming entities
+    float m_fRadiusRepelDepth = 0.0f; // distance into the repel radius this entity is if applicable
+
 	matrix4 m_m4ToWorld = IDENTITY_M4; //Model matrix associated with this MyEntity
 	MeshManager* m_pMeshMngr = nullptr; //For rendering shapes
 
@@ -106,6 +110,12 @@ public:
 	OUTPUT: are they colliding?
 	*/
 	bool IsColliding(MyEntity* const other);
+    /* RW 4/13
+    USAGE: Tells if this entity is within the repel radius of the incoming one
+    ARGUMENTS: MyEntity* const other -> inspected entity
+    OUTPUT: Are we within the repel radius of the other one?
+    */
+    bool IsInRadius(MyEntity* const other);
 	/*
 	USAGE: Gets the MyEntity specified by unique ID, nullptr if not exists
 	ARGUMENTS: String a_sUniqueID -> unique ID if the queried entity
