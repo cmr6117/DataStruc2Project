@@ -310,10 +310,12 @@ bool Simplex::MyEntity::IsInRadius(MyEntity* const other)
     vector3 otherPos = other->GetRigidBody()->GetCenterGlobal();
     vector3 ourPos = GetRigidBody()->GetCenterGlobal();
 
+    // get the distance between other and us
     float magnitude = glm::length(otherPos - ourPos);
 
     if (magnitude < m_fRadiusRepel)
     {
+        // other is inside our repel radius, TODO: we move away from them based on depth
         m_fRadiusRepelDepth = m_fRadiusRepel - magnitude;
         return true;
     }
