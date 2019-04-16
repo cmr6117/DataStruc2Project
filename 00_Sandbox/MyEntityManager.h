@@ -17,6 +17,9 @@ class MyEntityManager
 	uint m_uEntityCount = 0; //number of elements in the list
 	PEntity* m_mEntityArray = nullptr; //array of MyEntity pointers
 	static MyEntityManager* m_pInstance; // Singleton pointer
+
+	uint m_playerRadius = 5; //radius around player that will repel other entities
+
 public:
 	/*
 	Usage: Gets the singleton pointer
@@ -311,6 +314,12 @@ public:
 	OUTPUT: ---
 	*/
 	void UsePhysicsSolver(bool a_bUse = true, uint a_uIndex = -1);
+	/*
+	USAGE: Check for the area collision of the wolves with the players
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void WolfPhysics();
 private:
 	/*
 	Usage: constructor

@@ -187,6 +187,8 @@ void Simplex::MyEntityManager::Update(void)
 		//Update each entity
 		m_mEntityArray[i]->Update();
 	}
+
+	WolfPhysics();
 }
 void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID)
 {
@@ -516,4 +518,32 @@ void Simplex::MyEntityManager::UsePhysicsSolver(bool a_bUse, uint a_uIndex)
 		a_uIndex = m_uEntityCount - 1;
 
 	return m_mEntityArray[a_uIndex]->UsePhysicsSolver(a_bUse);
+}
+
+void Simplex::MyEntityManager::WolfPhysics()
+{
+	//go through the wolves and check if they are close to the player
+	vector3 playerPos = GetRigidBody("Player")->GetCenterLocal();
+	for (int i = 0; i < 4; i++)
+	{
+		//find the distance/direction vector
+		uint wolfIndex = GetEntityIndex("wolves_" + std::to_string(i));
+		vector3 wolfPos = GetRigidBody(wolfIndex)->GetCenterLocal();
+		vector3 directionVec = vector3(wolfPos.x - playerPos.x, 0.0f, wolfPos.z - playerPos.z);
+		//check for collision of radius
+		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
+		{
+			uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
+			if (distanceBetween < m_playerRadius)
+			{
+				//normalize the direction vector
+				directionVec = directionVec / distanceBetween;
+				directionVec += GetEntity(wolfIndex)->GetPosition();
+				//apply the force
+				//ApplyForce(directionVec, "wolves_" + std::to_string(i));GetModelMatrix
+				matrix4 wolfTranslate = glm::translate(directionVec) * IDENTITY_M4;
+				SetModelMatrix(wolfTranslate, wolfIndex);
+			}
+		}
+	}
 }
