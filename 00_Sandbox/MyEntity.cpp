@@ -39,6 +39,13 @@ void Simplex::MyEntity::SetModelMatrix(matrix4 a_m4ToWorld)
     }
 }
 
+String Simplex::MyEntity::GetDirection()
+{
+	return direction;
+}
+
+void Simplex::MyEntity::SetDirection(String newDir) { direction = newDir; }
+
 Model* Simplex::MyEntity::GetModel(void) { return m_pModel; }
 MyRigidBody* Simplex::MyEntity::GetRigidBody(void) { return m_pRigidBody; }
 bool Simplex::MyEntity::IsInitialized(void) { return m_bInMemory; }
@@ -356,6 +363,42 @@ void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
     {
         m_pSolver->ResolveCollision(a_pOther->GetSolver());
     }
+
+	//If colliding with fence, must ensure entity cannot pass it, 
+	//but don't trigger if fences collide with other fences
+	if (a_pOther->m_sUniqueID.find("fence") != std::string::npos &&
+		!(m_sUniqueID.find("fence") != std::string::npos))
+	{
+		vector3 newPos = vector3(GetPosition());
+		matrix4 m4Rotation;
+
+		if (GetDirection().find("North") != std::string::npos) 
+		{ 
+			newPos.z += step * 2; 		
+			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(180.f), glm::vec3(0, 1.0f, 0));
+		}
+		if (GetDirection().find("South") != std::string::npos)
+		{
+			newPos.z -= step * 2; 	
+			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(0.f), glm::vec3(0, 1.0f, 0));
+		}
+		if (GetDirection().find("East") != std::string::npos)
+		{
+			newPos.x -= step * 2; 		
+			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+		}
+		if (GetDirection().find("West") != std::string::npos)
+		{
+			newPos.x += step * 2; 		
+			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(-90.f), glm::vec3(0, 1.0f, 0));
+		}
+
+		SetPosition(newPos);
+		ClearCollisionList();
+		a_pOther->ClearCollisionList();
+		matrix4 col = glm::translate(GetPosition()) * m4Rotation;
+		SetModelMatrix(col);
+	}
 }
 void Simplex::MyEntity::UsePhysicsSolver(bool a_bUse)
 {

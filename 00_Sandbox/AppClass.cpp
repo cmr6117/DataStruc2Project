@@ -15,7 +15,6 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
-
 	m_pEntityMngr = MyEntityManager::GetInstance(); //Initialize the entity manager
 	//m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves");
 	//m_pEntityMngr->UsePhysicsSolver();
@@ -55,6 +54,24 @@ void Application::InitVariables(void)
 	//Adding player entity to world
 	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
 
+	//Mike 4/17 - Generating Fence Perimeter
+	for (int i = 0; i <= 40; i++)
+	{
+		float angle = 2 * PI * i / 40;
+		float x = 33 * sin(angle);
+		float y = 33 * cos(angle);
+
+		m_pEntityMngr->AddEntity("Minecraft\\fence_long.obj", "fence_" + std::to_string(i));
+		vector3 v3fencePosition = vector3(x, 0.f, y);
+		matrix4 m4Rotation = glm::rotate(IDENTITY_M4, angle, glm::vec3(0, 1.0f, 0));
+		matrix4 m4fencePosition = glm::translate(v3fencePosition) * m4Rotation;
+		m_pEntityMngr->SetModelMatrix(m4fencePosition);
+	}
+
+	//Mike - 4/16 Generating Pen
+	GeneratePen(m_pEntityMngr);
+
+	
     m_iClock = m_pSystem->GenClock();
     m_pSystem->StartClock(m_iClock);
 }
@@ -63,17 +80,18 @@ void Application::Update(void)
 {
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
-    m_fDeltaTime = m_pSystem->GetDeltaTime(m_iClock);
+	m_fDeltaTime = m_pSystem->GetDeltaTime(m_iClock);
 
 	//Is the arcball active?
 	ArcBall();
 
 	//Is the first person camera active?
 	CameraRotation();
-	
+
 	//Mike - 4/7
-	//Set model matrix to the player
-	matrix4 mPlayer = glm::translate(m_v3PlayerPos) * IDENTITY_M4;
+	//Set model matrix to the player, rotate based of direction from last WASD input (4/14)
+	matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians((float)fDirection), glm::vec3(0,1.0f,0));
+	matrix4 mPlayer = glm::translate((m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player")))->GetPosition()) * m4Rotation;	
 	m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
 	//Update Entity Manager
@@ -112,4 +130,47 @@ void Application::Release(void)
 {
 	//release GUI
 	ShutdownGUI();
+}
+
+void Application::GeneratePen(MyEntityManager* m_pInstance)
+{
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_1");
+	vector3 v3fencePosition = vector3(-21.0f, 0, -4.0f);
+	matrix4 m4fencePosition = glm::translate(v3fencePosition);
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_2");
+	v3fencePosition = vector3(-14.0f, 0, -4.0f);
+	m4fencePosition = glm::translate(v3fencePosition);
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_3");
+	v3fencePosition = vector3(-21.0f, 0, 10.0f);
+	m4fencePosition = glm::translate(v3fencePosition);
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_4");
+	v3fencePosition = vector3(-14.0f, 0, 10.0f);
+	m4fencePosition = glm::translate(v3fencePosition);
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_5");
+	v3fencePosition = vector3(-22.0f, 0, 2.f);
+	m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_6");
+	v3fencePosition = vector3(-22.0f, 0, 9.f);
+	m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence.obj", "fence_pen_7");
+	v3fencePosition = vector3(-8.0f, 0, 9.5f);
+	m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+	m_pInstance->SetModelMatrix(m4fencePosition);
+
+	m_pInstance->AddEntity("Minecraft\\fence.obj", "fence_pen_8");
+	v3fencePosition = vector3(-8.0f, 0, -3.f);
+	m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+	m_pInstance->SetModelMatrix(m4fencePosition);
 }
