@@ -86,7 +86,8 @@ void Application::Update(void)
 	ArcBall();
 
 	//Is the first person camera active?
-	CameraRotation();
+	//Christian - 4/17
+	//CameraRotation(); //Disabled for game
 
 	//Mike - 4/7
 	//Set model matrix to the player, rotate based of direction from last WASD input (4/14)
@@ -112,8 +113,9 @@ void Application::Display(void)
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
 
-	//Christian - 4/7
+	//Christian - 4/7, 4/17
 	//Render disc
+	m_pCameraMngr->SetPositionTargetAndUpward(vector3(0.0f, 20.0f, 60.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 1.0f, 0.0f));
 	m_discworld->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), glm::translate(vector3(0.0f, -1.0f, 0.0f)));
 
 	//clear the render list

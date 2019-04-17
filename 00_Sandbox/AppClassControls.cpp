@@ -60,10 +60,14 @@ void Application::ProcessMouseScroll(sf::Event a_event)
 	float fSpeed = a_event.mouseWheelScroll.delta;
 	float fMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
-
+	
+	//Christian - 4/17
+	// Disabled camera control
+	/*	
 	if (fMultiplier)
 		fSpeed *= 2.0f;
 	m_pCameraMngr->MoveForward(-fSpeed);
+	*/
 }
 //Keyboard
 void Application::ProcessKeyPressed(sf::Event a_event)
@@ -391,9 +395,13 @@ void Application::CameraRotation(float a_fSpeed)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
+	//Christian - 4/17
+	// Disabled camera control
+	/*	
 	m_pCameraMngr->ChangeYaw(fAngleY * 0.25f);
 	m_pCameraMngr->ChangePitch(-fAngleX * 0.25f);
-	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
+	*/
+SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
 void Application::ProcessKeyboard(void)
@@ -475,6 +483,9 @@ void Application::ProcessKeyboard(void)
 
     // RW 4/6 
     // changed camera movement to arrow keys for now, might remove camera control entirely.
+	//Christian - 4/7
+	// Disabled camera control
+	/*
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
 
@@ -492,6 +503,7 @@ void Application::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	*/
 #pragma endregion
 }
 //Joystick
