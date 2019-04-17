@@ -26,14 +26,17 @@ private:
 	bool m_bGUI_Console = false; //show Credits GUI window?
 	bool m_bGUI_Test = false; //show Test GUI window?
 	bool m_bGUI_Controller = false; //show Controller GUI window?
-
+	
     bool m_bBarked = false;
     uint m_iSheepSaved = 0;
 
     uint m_iClock;
     float m_fDeltaTime;
 
-	vector3 m_v3PlayerPos = ZERO_V3;
+	vector3 m_v3PlayerPos = ZERO_V3; //player position vector
+	enum directions { North = 180, East = 90, South = 0, West = -90 }; //enum for storing directions player may face, with angle needed to rotate to them
+	float fDirection; //will have the number component of directions for use in player movement
+
 	uint m_uRenderCallCount = 0; //count of render calls per frame
 	uint m_uControllerCount = 0; //count of controllers connected
 
@@ -142,6 +145,7 @@ private:
 	OUTPUT: ---
 	*/
 	void Release(void);
+	void GeneratePen(MyEntityManager * m_pInstance);
 #pragma endregion
 
 #pragma region Main Loop

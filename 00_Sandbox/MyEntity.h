@@ -16,6 +16,7 @@ class MyEntity
 	bool m_bInMemory = false; //loaded flag
 	bool m_bSetAxis = false; //render axis flag
 	String m_sUniqueID = ""; //Unique identifier name
+	String direction = "South"; //Keeps track of direction for boundary collision
 
 	uint m_nDimensionCount = 0; //tells how many dimensions this entity lives in
 	uint* m_DimensionArray = nullptr; //Dimensions on which this entity is located
@@ -36,6 +37,7 @@ class MyEntity
 
 	MySolver* m_pSolver = nullptr; //Physics MySolver
 public:
+	float step = 0.f;
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:
@@ -80,6 +82,18 @@ public:
 	OUTPUT: ---
 	*/
 	void SetModelMatrix(matrix4 a_m4ToWorld);
+	/*
+	USAGE: Gets the direction the model is trying to move
+	ARGUMENTS:  ---
+	OUTPUT: ---
+	*/
+	String GetDirection();
+	/*
+	USAGE: Sets the direction the model is trying to move
+	ARGUMENTS: string newDir-> direction to se
+	OUTPUT: ---
+	*/
+	void SetDirection(String newDir);
 	/*
 	USAGE: Gets the model associated with this entity
 	ARGUMENTS: ---

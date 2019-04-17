@@ -411,30 +411,44 @@ void Application::ProcessKeyboard(void)
     // and that it's oriented just as the world is (so it's not confusing for the player)
 
     float step = m_fPlayerSpeed * m_fDeltaTime;
-    
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->step = step;
+	m_v3PlayerPos = m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->GetPosition();
+	String currentDir = "";
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         // translate player in -z, move them north
 		m_v3PlayerPos.z -= step;
+		currentDir += "North";
+		fDirection = (float)directions::North;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        // translate player in z, move them south
+		// translate player in z, move them south
 		m_v3PlayerPos.z += step;
+		currentDir += "South";
+		fDirection = (float)directions::South;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        // translate player in -x, move them west
-		m_v3PlayerPos.x -= step;
+		// translate player in -x, move them west
+		m_v3PlayerPos.x -= step; 
+		currentDir += "West";
+		fDirection = (float)directions::West;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        // translate player in x, move them east
+		// translate player in x, move them east
 		m_v3PlayerPos.x += step;
+		currentDir += "East";
+		fDirection = (float)directions::East;
     }
+
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetPosition(m_v3PlayerPos);
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetDirection(currentDir);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
