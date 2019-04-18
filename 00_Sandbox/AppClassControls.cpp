@@ -60,10 +60,14 @@ void Application::ProcessMouseScroll(sf::Event a_event)
 	float fSpeed = a_event.mouseWheelScroll.delta;
 	float fMultiplier = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::RShift);
-
+	
+	//Christian - 4/17
+	// Disabled camera control
+	/*	
 	if (fMultiplier)
 		fSpeed *= 2.0f;
 	m_pCameraMngr->MoveForward(-fSpeed);
+	*/
 }
 //Keyboard
 void Application::ProcessKeyPressed(sf::Event a_event)
@@ -391,9 +395,13 @@ void Application::CameraRotation(float a_fSpeed)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
+	//Christian - 4/17
+	// Disabled camera control
+	/*	
 	m_pCameraMngr->ChangeYaw(fAngleY * 0.25f);
 	m_pCameraMngr->ChangePitch(-fAngleX * 0.25f);
-	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
+	*/
+SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
 void Application::ProcessKeyboard(void)
@@ -411,30 +419,44 @@ void Application::ProcessKeyboard(void)
     // and that it's oriented just as the world is (so it's not confusing for the player)
 
     float step = m_fPlayerSpeed * m_fDeltaTime;
-    
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->step = step;
+	m_v3PlayerPos = m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->GetPosition();
+	String currentDir = "";
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         // translate player in -z, move them north
 		m_v3PlayerPos.z -= step;
+		currentDir += "North";
+		fDirection = (float)directions::North;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
-        // translate player in z, move them south
+		// translate player in z, move them south
 		m_v3PlayerPos.z += step;
+		currentDir += "South";
+		fDirection = (float)directions::South;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
-        // translate player in -x, move them west
-		m_v3PlayerPos.x -= step;
+		// translate player in -x, move them west
+		m_v3PlayerPos.x -= step; 
+		currentDir += "West";
+		fDirection = (float)directions::West;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        // translate player in x, move them east
+		// translate player in x, move them east
 		m_v3PlayerPos.x += step;
+		currentDir += "East";
+		fDirection = (float)directions::East;
     }
+
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetPosition(m_v3PlayerPos);
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetDirection(currentDir);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -461,6 +483,9 @@ void Application::ProcessKeyboard(void)
 
     // RW 4/6 
     // changed camera movement to arrow keys for now, might remove camera control entirely.
+	//Christian - 4/7
+	// Disabled camera control
+	/*
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
 
@@ -478,6 +503,7 @@ void Application::ProcessKeyboard(void)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	*/
 #pragma endregion
 }
 //Joystick
