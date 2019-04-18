@@ -319,7 +319,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void WolfPhysics();
+	void EntityPhysics();
 private:
 	/*
 	Usage: constructor

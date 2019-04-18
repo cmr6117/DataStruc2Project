@@ -27,7 +27,7 @@ void Simplex::MyEntity::SetModelMatrix(matrix4 a_m4ToWorld)
         glm::vec3 skew;
         glm::vec4 perspective;
         glm::decompose(m_m4ToWorld, scale, orientation, translation, skew, perspective);
-
+		
         //TODO: this is a hot fix the orientation inverses itself without this using the decompose
         matrix4 temp = glm::translate(translation) * ToMatrix4(orientation) * glm::scale(scale);
         glm::decompose(temp, scale, orientation, translation, skew, perspective);

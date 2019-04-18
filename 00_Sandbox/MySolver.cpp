@@ -107,7 +107,7 @@ void MySolver::Update(void)
 
 	m_v3Velocity += m_v3Acceleration;
 
-	float fMaxVelocity = 5.0f;
+	float fMaxVelocity = 2.0f;
 	m_v3Velocity = CalculateMaxVelocity(m_v3Velocity, fMaxVelocity);
 
 	ApplyFriction(0.1f);

@@ -24,26 +24,25 @@ void Application::InitVariables(void)
 	{
 		m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(i));
 		vector3 v3Position = vector3(rand() % 25 - 10 + 15, 0.0f, rand() % 25 - 10);
-		matrix4 m4Position = glm::translate(v3Position);
+		
 		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
+		m_pEntityMngr->UsePhysicsSolver(true, "sheep_" + std::to_string(i));
+		m_pEntityMngr->SetMass(1.5, "sheep_" + std::to_string(i));
+		matrix4 m4Position = glm::translate(v3Position);
 		m_pEntityMngr->SetModelMatrix(m4Position);
-		//m_pEntityMngr->UsePhysicsSolver(true);
-		//m_pEntityMngr->SetMass(1.5);
-
-		//m_pEntityMngr->SetMass(i+1);
 	}
 
 	for (int i = 0; i < 4; i++)
 	{
 		m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves_" + std::to_string(i));
 		vector3 v3Position = vector3(rand() % 25 - 10 - 15, 0.0f, rand() % 25 - 10);
-		matrix4 m4Position = glm::translate(v3Position);
+		
 		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
+		
+		m_pEntityMngr->UsePhysicsSolver(true, "wolves_" + std::to_string(i));
+		m_pEntityMngr->SetMass(1.5, "wolves_" + std::to_string(i));
+		matrix4 m4Position = glm::translate(v3Position);
 		m_pEntityMngr->SetModelMatrix(m4Position);
-		//m_pEntityMngr->UsePhysicsSolver(true);
-		//m_pEntityMngr->SetMass(1.5);
-
-		//m_pEntityMngr->SetMass(i+1);
 	}
 
 	//Christian - 4/7
@@ -53,7 +52,10 @@ void Application::InitVariables(void)
 
 	//Mike - 4/7
 	//Adding player entity to world
+
 	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player");
+	m_pEntityMngr->UsePhysicsSolver(true, "Player");
+	m_pEntityMngr->SetMass(1.5, "Player");
 
     m_iClock = m_pSystem->GenClock();
     m_pSystem->StartClock(m_iClock);
@@ -78,6 +80,8 @@ void Application::Update(void)
 
 	//Update Entity Manager
 	m_pEntityMngr->Update();
+	//m_pEntityMngr->WolfPhysics();
+	//m_pEntityMngr->ApplyForce(vector3(0.01f,0.0f,0.0f), "wolves_" + std::to_string(1));
 
 	//Add objects to render list
     m_pEntityMngr->AddEntityToRenderList(-1, true);
