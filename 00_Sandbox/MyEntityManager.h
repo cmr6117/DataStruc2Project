@@ -22,6 +22,8 @@ class MyEntityManager
 	std::vector<uint> closestSheepIndex; //record the closest sheep to the wolves
 	std::vector<vector3> closestSheepDirection; //record the the direction the wolf is going in
 
+	vector3 wanderingGoal = vector3(0); //direction entity wants to roam
+
 public:
 	/*
 	Usage: Gets the singleton pointer
@@ -328,6 +330,18 @@ public:
 	OUTPUT: ---
 	*/
 	void WolfUpdate();
+	/*
+	USAGE: find the sheeps' pathfinding
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void SheepUpdate();
+	/*
+	USAGE: make sheep wander
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void SheepWander();
 private:
 	/*
 	Usage: constructor

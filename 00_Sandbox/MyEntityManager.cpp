@@ -636,3 +636,19 @@ void Simplex::MyEntityManager::WolfUpdate()
 		directionVec = ZERO_V3;
 	}
 }
+
+void Simplex::MyEntityManager::SheepUpdate()
+{
+
+}
+void Simplex::MyEntityManager::SheepWander()
+{
+	for (uint i = 0; i < length; i++)
+	{
+
+	}
+
+	vector3 directionChange = vector3();
+	wanderingGoal = glm::normalize(directionChange + wanderingGoal);
+	
+}
