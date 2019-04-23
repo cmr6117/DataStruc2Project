@@ -9,7 +9,7 @@ void Application::InitVariables(void)
 
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(
-		vector3(0.0f, 5.0f, 25.0f), //Position
+		vector3(0.0f, 50.0f, 12.5f), //Position
 		vector3(0.0f, 0.0f, 0.0f),	//Target
 		AXIS_Y);					//Up
 
@@ -120,7 +120,7 @@ void Application::Display(void)
 
 	//Christian - 4/7, 4/17
 	//Render disc
-	m_pCameraMngr->SetPositionTargetAndUpward(vector3(0.0f, 20.0f, 60.0f), vector3(0.0f, 0.0f, 0.0f), vector3(0.0f, 1.0f, 0.0f));
+	m_pCameraMngr->SetPositionTargetAndUpward(vector3(0.0f, 28.5f, 40.0f), vector3(0.0f, 0.0f, 15.8f), vector3(0.0f, 1.0f, 0.0f));
 	m_discworld->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), glm::translate(vector3(0.0f, -1.0f, 0.0f)));
 
 	//clear the render list

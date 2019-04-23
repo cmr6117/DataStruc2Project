@@ -125,21 +125,21 @@ void Application::DrawGUI(void)
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), C_YELLOW);
 	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("Press ");
-	m_pMeshMngr->Print("SpaceBar", C_BLUE);
-	m_pMeshMngr->PrintLine(" for sound!");
+	//m_pMeshMngr->Print("Press ");
+	//m_pMeshMngr->Print("SpaceBar", C_BLUE);
+	//m_pMeshMngr->PrintLine(" for sound!");
 
 	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
-	m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
+	//m_pMeshMngr->Print("RenderCalls: ");//Add a line on top
+	//m_pMeshMngr->PrintLine(std::to_string(m_uRenderCallCount), C_YELLOW);
 
 	//m_pMeshMngr->Print("						");
 	m_pMeshMngr->Print("FPS:");
 	m_pMeshMngr->PrintLine(std::to_string(m_pSystem->GetFPS()), C_RED);
 
 	//m_pMeshMngr->Print("						");
-	m_pMeshMngr->Print("Camera Pos:");
-	m_pMeshMngr->Print(std::to_string(m_pCameraMngr->GetPosition().x) + ", " + std::to_string(m_pCameraMngr->GetPosition().y) + ", " + std::to_string(m_pCameraMngr->GetPosition().z), C_GREEN);
+	//m_pMeshMngr->Print("Camera Pos:");
+	//m_pMeshMngr->Print(std::to_string(m_pCameraMngr->GetPosition().x) + ", " + std::to_string(m_pCameraMngr->GetPosition().y) + ", " + std::to_string(m_pCameraMngr->GetPosition().z), C_GREEN);
 #pragma endregion
 
 	//Calculate the window size to know how to draw
