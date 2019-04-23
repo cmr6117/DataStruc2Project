@@ -19,6 +19,8 @@ class MyEntityManager
 	static MyEntityManager* m_pInstance; // Singleton pointer
 
 	uint m_playerRadius = 5; //radius around player that will repel other entities
+	std::vector<uint> closestSheepIndex; //record the closest sheep to the wolves
+	std::vector<vector3> closestSheepDirection; //record the the direction the wolf is going in
 
 public:
 	/*
@@ -320,6 +322,12 @@ public:
 	OUTPUT: ---
 	*/
 	void EntityPhysics();
+	/*
+	USAGE: find the wolves' pathfinding
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void WolfUpdate();
 private:
 	/*
 	Usage: constructor
