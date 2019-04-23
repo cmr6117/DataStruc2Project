@@ -57,9 +57,9 @@ void Application::InitVariables(void)
 	m_pEntityMngr->SetMass(1.5, "Player");
 
 	//Mike 4/17 - Generating Fence Perimeter
-	for (int i = 0; i <= 40; i++)
+	for (int i = 0; i <= 35; i++)
 	{
-		float angle = 2 * PI * i / 40;
+		float angle = 2 * PI * i / 35;
 		float x = 33 * sin(angle);
 		float y = 33 * cos(angle);
 
@@ -68,6 +68,7 @@ void Application::InitVariables(void)
 		matrix4 m4Rotation = glm::rotate(IDENTITY_M4, angle, glm::vec3(0, 1.0f, 0));
 		matrix4 m4fencePosition = glm::translate(v3fencePosition) * m4Rotation;
 		m_pEntityMngr->SetModelMatrix(m4fencePosition);
+		m_pEntityMngr->GetRigidBody("fence_" + std::to_string(i))->SetModelMatrix(m4fencePosition);
 	}
 
 	//Mike - 4/16 Generating Pen

@@ -527,6 +527,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 	uint entityIndex;
 	vector3 entityPos;
 	vector3 directionVec;
+	String currentDir = "";
 
 	//check wolves
 	for (int i = 0; i < 4; i++)
@@ -536,6 +537,8 @@ void Simplex::MyEntityManager::EntityPhysics()
 		entityPos = GetEntity(entityIndex)->GetPosition();
 		directionVec = entityPos - playerPos;
 		directionVec.y = 0.0f;
+		currentDir = "";
+
 		//check for collision of radius
 		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
 		{
@@ -544,6 +547,15 @@ void Simplex::MyEntityManager::EntityPhysics()
 			{
 				//normalize the direction vector
 				directionVec = directionVec / (distanceBetween * 300.0f);
+
+				if (directionVec.z > 0) { currentDir += "South"; }
+				else { currentDir += "North"; }
+				if (directionVec.x > 0) { currentDir += "East"; }
+				else { currentDir += "West"; }
+
+				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
+				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
+
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 			}
@@ -557,6 +569,8 @@ void Simplex::MyEntityManager::EntityPhysics()
 		entityPos = GetEntity(entityIndex)->GetPosition();
 		directionVec = entityPos - playerPos;
 		directionVec.y = 0.0f;
+		currentDir = "";
+
 		//check for collision of radius
 		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
 		{
@@ -565,6 +579,15 @@ void Simplex::MyEntityManager::EntityPhysics()
 			{
 				//normalize the direction vector distanceBetween/m_playerRadius
 				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+
+				if (directionVec.z > 0) { currentDir += "South"; }
+				else { currentDir += "North"; }
+				if (directionVec.x > 0) { currentDir += "East"; }
+				else { currentDir += "West"; }
+
+				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
+				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
+
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 			}

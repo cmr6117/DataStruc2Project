@@ -456,6 +456,7 @@ void Application::ProcessKeyboard(void)
     }
 
 	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetPosition(m_v3PlayerPos);
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetModelMatrix(glm::translate(IDENTITY_M4, m_v3PlayerPos));
 	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetDirection(currentDir);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

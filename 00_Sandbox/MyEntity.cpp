@@ -374,28 +374,30 @@ void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 
 		if (GetDirection().find("North") != std::string::npos) 
 		{ 
-			newPos.z += step * 2; 		
+			newPos.z += step*2.0f; 
 			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(180.f), glm::vec3(0, 1.0f, 0));
 		}
 		if (GetDirection().find("South") != std::string::npos)
 		{
-			newPos.z -= step * 2; 	
+			newPos.z -= step * 2.0f;
 			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(0.f), glm::vec3(0, 1.0f, 0));
 		}
 		if (GetDirection().find("East") != std::string::npos)
 		{
-			newPos.x -= step * 2; 		
+			newPos.x -= step * 2.0f;
 			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
 		}
 		if (GetDirection().find("West") != std::string::npos)
 		{
-			newPos.x += step * 2; 		
+			newPos.x += step * 2.0f;
 			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(-90.f), glm::vec3(0, 1.0f, 0));
 		}
 
 		SetPosition(newPos);
 		ClearCollisionList();
 		a_pOther->ClearCollisionList();
+
+
 		matrix4 col = glm::translate(GetPosition()) * m4Rotation;
 		SetModelMatrix(col);
 	}
