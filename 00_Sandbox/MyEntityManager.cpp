@@ -551,6 +551,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 	//		}
 	//	}
 	//}
+
 	//check sheep
 	for (int i = 0; i < 20; i++)
 	{
@@ -567,9 +568,8 @@ void Simplex::MyEntityManager::EntityPhysics()
 			uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
 			if (distanceBetween < m_playerRadius)
 			{
-<<<<<<< HEAD
-				//normalize the direction vector
-				directionVec = directionVec / (distanceBetween * 300.0f);
+				//normalize the direction vector distanceBetween/m_playerRadius
+				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
 				if (directionVec.z > 0) { currentDir += "South"; }
 				else { currentDir += "North"; }
@@ -579,10 +579,6 @@ void Simplex::MyEntityManager::EntityPhysics()
 				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
 				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
 
-=======
-				//normalize the direction vector distanceBetween/m_playerRadius
-				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
->>>>>>> 51796463122bd63873dbde002da31e4e72fa5452
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 			}
@@ -596,6 +592,8 @@ void Simplex::MyEntityManager::WolfUpdate()
 	uint entityIndex;
 	vector3 entityPos;
 	vector3 directionVec;
+	String currentDir;
+
 	//check wolves
 	for (int i = 0; i < 4; i++)
 	{
@@ -603,21 +601,19 @@ void Simplex::MyEntityManager::WolfUpdate()
 		entityPos = GetEntity(entityIndex)->GetPosition();
 		directionVec = entityPos - playerPos;
 		directionVec.y = 0.0f;
-<<<<<<< HEAD
 		currentDir = "";
 
 		//check for collision of radius
 		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-=======
 
 		//check collisions with player
 		if (true)//check if the grid for wolves is the same as the player grid (add in later)
->>>>>>> 51796463122bd63873dbde002da31e4e72fa5452
 		{
 			//check for collision of radius
 			if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
 			{
-<<<<<<< HEAD
+				uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
+
 				//normalize the direction vector distanceBetween/m_playerRadius
 				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
@@ -631,16 +627,6 @@ void Simplex::MyEntityManager::WolfUpdate()
 
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-=======
-				float distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-				if (distanceBetween < m_playerRadius)
-				{
-					//normalize the direction vector
-					directionVec = directionVec / (distanceBetween * 300.0f);
-					//apply the force
-					m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-				}
->>>>>>> 51796463122bd63873dbde002da31e4e72fa5452
 			}
 		}
 
