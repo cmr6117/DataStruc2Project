@@ -524,7 +524,6 @@ void Simplex::MyEntityManager::UsePhysicsSolver(bool a_bUse, uint a_uIndex)
 
 void Simplex::MyEntityManager::EntityPhysics()
 {
-<<<<<<< HEAD
 	//go through the wolves and check if they are close to the player
 	vector3 playerPos = GetEntity(GetEntityIndex("Player"))->GetPosition();
 	uint entityIndex;
@@ -586,74 +585,10 @@ void Simplex::MyEntityManager::EntityPhysics()
 			}
 		}
 	}
-=======
-    //go through the wolves and check if they are close to the player
-    vector3 playerPos = GetEntity(GetEntityIndex("Player"))->GetPosition();
-    uint entityIndex;
-    vector3 entityPos;
-    vector3 directionVec;
-    String currentDir = "";
-
-    //check wolves
-    //for (int i = 0; i < 4; i++)
-    //{
-    //	//find the distance/direction vector
-    //	entityIndex = GetEntityIndex("wolves_" + std::to_string(i));
-    //	entityPos = GetEntity(entityIndex)->GetPosition();
-    //	directionVec = entityPos - playerPos;
-    //	directionVec.y = 0.0f;
-    //	//check for collision of radius
-    //	if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-    //	{
-    //		uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-    //		if (distanceBetween < m_playerRadius)
-    //		{
-    //			//normalize the direction vector
-    //			directionVec = directionVec / (distanceBetween * 300.0f);
-    //			//apply the force
-    //			m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-    //		}
-    //	}
-    //}
-
-    //check sheep
-    for (int i = 0; i < 20; i++)
-    {
-        //find the distance/direction vector
-        entityIndex = GetEntityIndex("sheep_" + std::to_string(i));
-        entityPos = GetEntity(entityIndex)->GetPosition();
-        directionVec = entityPos - playerPos;
-        directionVec.y = 0.0f;
-        currentDir = "";
-
-        //check for collision of radius
-        if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-        {
-            uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-            if (distanceBetween < m_playerRadius)
-            {
-                //normalize the direction vector distanceBetween/m_playerRadius
-                directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
-
-                if (directionVec.z > 0) { currentDir += "South"; }
-                else { currentDir += "North"; }
-                if (directionVec.x > 0) { currentDir += "East"; }
-                else { currentDir += "West"; }
-
-                GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
-                GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
-
-                //apply the force
-                m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-            }
-        }
-    }
->>>>>>> origin/rwaring
 }
 
 void Simplex::MyEntityManager::WolfUpdate()
 {
-<<<<<<< HEAD
 	vector3 playerPos = GetEntity(GetEntityIndex("Player"))->GetPosition();
 	uint entityIndex;
 	vector3 entityPos;
@@ -727,79 +662,4 @@ void Simplex::MyEntityManager::WolfUpdate()
 		m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 		directionVec = ZERO_V3;
 	}
-=======
-    vector3 playerPos = GetEntity(GetEntityIndex("Player"))->GetPosition();
-    uint entityIndex;
-    vector3 entityPos;
-    vector3 directionVec;
-    String currentDir;
-
-    //check wolves
-    for (int i = 0; i < 4; i++)
-    {
-        entityIndex = GetEntityIndex("wolves_" + std::to_string(i));
-        entityPos = GetEntity(entityIndex)->GetPosition();
-        directionVec = entityPos - playerPos;
-        directionVec.y = 0.0f;
-        currentDir = "";
-
-        //check for collision of radius
-        if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-
-            //check collisions with player
-            if (true)//check if the grid for wolves is the same as the player grid (add in later)
-            {
-                //check for collision of radius
-                if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-                {
-                    uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-
-                    //normalize the direction vector distanceBetween/m_playerRadius
-                    directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
-
-                    if (directionVec.z > 0) { currentDir += "South"; }
-                    else { currentDir += "North"; }
-                    if (directionVec.x > 0) { currentDir += "East"; }
-                    else { currentDir += "West"; }
-
-                    GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
-                    GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
-
-                    //apply the force
-                    m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-                }
-            }
-
-        //find closest sheep
-        if (true) //find the closest sheep every second or so
-        {
-            if (closestSheepIndex.size() < 4)
-            {
-                closestSheepIndex.push_back(GetEntityIndex("sheep_" + std::to_string(0)));
-            }
-
-            //vector3 newSheepPos;
-            for (int j = 0; j < 20; j++)
-            {
-                //find the distance/direction vector
-                uint sheepIndex = GetEntityIndex("sheep_" + std::to_string(j));
-                vector3 oldSheepDirection = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
-                oldSheepDirection.y = 0.0f;
-                directionVec = GetEntity(sheepIndex)->GetPosition(); -entityPos;
-                directionVec.y = 0.0f;
-                float newSheepDistance = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-                if (newSheepDistance < sqrt(pow(oldSheepDirection.x, 2.0f) + pow(oldSheepDirection.z, 2.0f)))
-                {
-                    closestSheepIndex[i] = sheepIndex;
-                    oldSheepDirection = directionVec;
-                }
-            }
-        }
-
-        //seek sheep
-        directionVec = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
-        m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-        directionVec = ZERO_V3;
-    }
->>>>>>> origin/rwaring
 }
