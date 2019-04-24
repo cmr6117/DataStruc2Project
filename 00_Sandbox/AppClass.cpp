@@ -101,15 +101,16 @@ void Application::Update(void)
     // Rowan - 4/24
     // TODO: Toggle between entity manager collision logic, and grid logic based on whether or not the grid is active
     // TODO: Somehow find a way to include things properly so AppClassControls can handle this, and AppClass.h can have member declarations
+    // TODO: Show in GUI
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
     {
         if (!m_bToggledGrid) {
             TheGrid->Active = !TheGrid->Active;
 
             if (TheGrid->Active)
-                std::cout << "Grid is active";
+                std::cout << "\nGrid is active";
             else
-                std::cout << "Grid is inactive";
+                std::cout << "\nGrid is inactive";
 
             m_bToggledGrid = true;
         }
@@ -119,23 +120,23 @@ void Application::Update(void)
         m_bToggledGrid = false;
     }
 
-    // Rowan - 4/24
-    // TODO: This probably needs to actually be in EntityManager, toggling between standard collision checking, and grid checking
-    if (TheGrid->Active)
-        TheGrid->Update();
-
-    //Is the first person camera active?
-    //Christian - 4/17
-    //CameraRotation(); //Disabled for game
-
     //Mike - 4/7
     //Set model matrix to the player, rotate based of direction from last WASD input (4/14)
     matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians((float)fDirection), glm::vec3(0, 1.0f, 0));
     matrix4 mPlayer = glm::translate((m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player")))->GetPosition()) * m4Rotation;
     m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
-    //Update Entity Manager
-    m_pEntityMngr->Update();
+    // clear collisions
+    m_pEntityMngr->ClearCollisions(); 
+
+    // use grid collisions if applicable before moving entities
+    if (TheGrid->Active)
+        TheGrid->Update();
+
+    // update entity movement stuff
+    // if the grid is false, EntityManager will use standard unoptimized collisions before moving entities
+    m_pEntityMngr->Update(TheGrid->Active);
+
     //m_pEntityMngr->WolfPhysics();
     //m_pEntityMngr->ApplyForce(vector3(0.01f,0.0f,0.0f), "wolves_" + std::to_string(1));
 
