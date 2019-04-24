@@ -14,6 +14,10 @@ CellNode::~CellNode()
 
 void Simplex::CellNode::HandleCollisions()
 {
+    // if there's 1 or fewer entities in this cell, there's nothing to collide with
+    if (EntitiesInside.size() < 2)
+        return;
+
     for (uint i = 0; i < EntitiesInside.size(); i++) 
     {
         MyEntity* current = EntitiesInside[i];
