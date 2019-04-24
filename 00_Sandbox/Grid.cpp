@@ -28,8 +28,8 @@ void Simplex::Grid::Init(float worldRadius)
 			vector3 cellMin = vector3(rowPos.x, 0.0f, rowPos.z + (CellSize*j));
 			vector3 cellMax = vector3(cellMin.x + CellSize, 0.0f, cellMin.z + CellSize);
 			//create the cell sudocode (until cell node is actually created
-			//CellNode *buffer = new  CellNode(cellMin, cellMax);
-			//CellList.push_back(buffer);
+			CellNode *buffer = new CellNode(cellMin, cellMax, CellSize);
+			CellList.push_back(buffer);
 		}
 	}
 }

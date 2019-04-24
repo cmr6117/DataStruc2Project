@@ -19,6 +19,6 @@ namespace Simplex
 		float CellSize;
 		float WorldRadius;
 		static const int NUM_CELLS = 12;
-		std::vector<CellNode> CellList;
+		std::vector<CellNode*> CellList;
 	};
 }
