@@ -576,8 +576,8 @@ void Simplex::MyEntityManager::EntityPhysics()
 				if (directionVec.x > 0) { currentDir += "East"; }
 				else { currentDir += "West"; }
 
-				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
-				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
+				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
+				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
 
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
@@ -622,8 +622,8 @@ void Simplex::MyEntityManager::WolfUpdate()
 				if (directionVec.x > 0) { currentDir += "East"; }
 				else { currentDir += "West"; }
 
-				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
-				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
+				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
+				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
 
 				//apply the force
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
