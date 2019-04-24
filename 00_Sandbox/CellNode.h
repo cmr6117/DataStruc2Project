@@ -10,6 +10,8 @@ namespace Simplex
 		CellNode(vector3 cellMin, vector3 cellMax, float cellSize);
 		~CellNode();
 
+        void HandleCollisions();
+
         std::vector<MyEntity*> EntitiesInside;
     private:
         float m_fRadius;

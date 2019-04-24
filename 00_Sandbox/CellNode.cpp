@@ -13,3 +13,25 @@ CellNode::CellNode(vector3 cellMin, vector3 cellMax, float cellSize)
 CellNode::~CellNode()
 {
 }
+
+void Simplex::CellNode::HandleCollisions()
+{
+    for (uint i = 0; i < EntitiesInside.size(); i++) 
+    {
+        MyEntity* current = EntitiesInside[i];
+
+        for (uint j = 0; j < EntitiesInside.size(); j++)
+        {
+            // ignore self
+            if (i == j)
+                continue;
+
+            MyEntity* other = EntitiesInside[j];
+
+            if (current->IsColliding(other))
+            {
+                current->ResolveCollision(other);
+            }
+        }
+    }
+}
