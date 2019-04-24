@@ -33,3 +33,14 @@ void Simplex::Grid::Init(float worldRadius)
 		}
 	}
 }
+
+void Simplex::Grid::Update()
+{
+    // handle collisions within each cell
+    for (uint i = 0; i < CellList.size(); i++)
+    {
+        CellNode* current = CellList[i];
+
+        current->HandleCollisions();
+    }
+}

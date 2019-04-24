@@ -13,6 +13,7 @@ namespace Simplex
 
 		//grid functions
 		void Init(float worldRadius);
+        void Update();
 
 		//grid variables
 		bool Active;
