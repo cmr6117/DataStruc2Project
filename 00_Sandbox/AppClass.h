@@ -28,6 +28,7 @@ private:
 	bool m_bGUI_Controller = false; //show Controller GUI window?
 	
     bool m_bBarked = false;
+    bool m_bToggledGrid = false;
     uint m_iSheepSaved = 0;
 
     uint m_iClock;

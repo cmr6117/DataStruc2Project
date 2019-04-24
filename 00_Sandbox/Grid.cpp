@@ -1,13 +1,11 @@
 #include "Grid.h"
+
 using namespace Simplex;
-
-
 
 Grid::Grid(float worldRadius)
 {
 	Init(worldRadius);
 }
-
 
 Grid::~Grid()
 {
@@ -15,6 +13,7 @@ Grid::~Grid()
 
 void Simplex::Grid::Init(float worldRadius)
 {
+    Active = false;
 	WorldRadius = worldRadius;
 	CellSize = (worldRadius * 2) / NUM_CELLS;
 

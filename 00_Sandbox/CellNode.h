@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AppClass.h"
+#include "MyEntity.h"
 
 namespace Simplex
 {
