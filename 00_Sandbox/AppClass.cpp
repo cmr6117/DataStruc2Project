@@ -1,6 +1,9 @@
 #include "AppClass.h"
 using namespace Simplex;
 
+// Rowan - 4/24
+enum class EntityTypes { Sheep, Wolf, Fence, Player };
+
 void Application::InitVariables(void)
 {
 	srand(time(NULL));
@@ -21,7 +24,7 @@ void Application::InitVariables(void)
 
 	for (int i = 0; i < 20; i++)
 	{
-		m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(i), 0);
+		m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(i), (uint)EntityTypes::Sheep);
 		vector3 v3Position = vector3(rand() % 25 - 10 + 15, 0.0f, rand() % 25 - 10);
 		
 		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
@@ -33,7 +36,7 @@ void Application::InitVariables(void)
 
 	for (int i = 0; i < 4; i++)
 	{
-		m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves_" + std::to_string(i), 1);
+		m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves_" + std::to_string(i), (uint)EntityTypes::Wolf);
 		vector3 v3Position = vector3(rand() % 25 - 10 - 15, 0.0f, rand() % 25 - 10);
 		
 		//m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
@@ -52,7 +55,7 @@ void Application::InitVariables(void)
 	//Mike - 4/7
 	//Adding player entity to world
 
-	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player", -1);
+	m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player", (uint)EntityTypes::Player);
 	m_pEntityMngr->UsePhysicsSolver(true, "Player");
 	m_pEntityMngr->SetMass(1.5, "Player");
 
@@ -63,7 +66,7 @@ void Application::InitVariables(void)
 		float x = 33 * sin(angle);
 		float y = 33 * cos(angle);
 
-		m_pEntityMngr->AddEntity("Minecraft\\fence_long.obj", "fence_" + std::to_string(i), 2);
+		m_pEntityMngr->AddEntity("Minecraft\\fence_long.obj", "fence_" + std::to_string(i), (uint)EntityTypes::Fence);
 		vector3 v3fencePosition = vector3(x, 0.f, y);
 		matrix4 m4Rotation = glm::rotate(IDENTITY_M4, angle, glm::vec3(0, 1.0f, 0));
 		matrix4 m4fencePosition = glm::translate(v3fencePosition) * m4Rotation;
