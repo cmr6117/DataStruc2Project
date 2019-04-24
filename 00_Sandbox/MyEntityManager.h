@@ -46,6 +46,15 @@ public:
 	ARGUMENTS:
 	-	String a_sFileName -> Name of the model to load
 	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
+	-	uint a_sEntityType -> 0 is sheep, 1 is wolves, 2 is fence, anything else is a player.
+	OUTPUT: ---
+	*/
+	void AddEntity(String a_sFileName, String a_sUniqueID = "NA", uint a_nEntityType = -1);
+	/*
+	USAGE: Will add an entity to the list
+	ARGUMENTS:
+	-	String a_sFileName -> Name of the model to load
+	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
 	OUTPUT: ---
 	*/
 	void AddEntity(String a_sFileName, String a_sUniqueID = "NA");

@@ -36,6 +36,9 @@ class MyEntity
 	bool m_bUsePhysicsSolver = false; //Indicates if we will use a physics solver 
 
 	MySolver* m_pSolver = nullptr; //Physics MySolver
+
+	uint m_nEntityType = -1;
+
 public:
 	float step = 0.f;
 	/*
@@ -43,9 +46,10 @@ public:
 	Arguments:
 	-	String a_sFileName -> Name of the model to load
 	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
+	-	uint a_sEntityType -> 0 is sheep, 1 is wolves, 2 is fence, anything else is a player.
 	Output: class object instance
 	*/
-	MyEntity(String a_sFileName, String a_sUniqueID = "NA");
+	MyEntity(String a_sFileName, String a_sUniqueID = "NA", uint a_nEntityType = -1);
 	/*
 	Usage: Copy Constructor
 	Arguments: class object to copy

@@ -120,7 +120,7 @@ void Simplex::MyEntity::Release(void)
     m_IDMap.erase(m_sUniqueID);
 }
 //The big 3
-Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
+Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID, uint a_nEntityType)
 {
     Init();
     m_pModel = new Model();
@@ -135,6 +135,7 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
         m_bInMemory = true; //mark this entity as viable
     }
     m_pSolver = new MySolver();
+	m_nEntityType = a_nEntityType;
 }
 Simplex::MyEntity::MyEntity(MyEntity const& other)
 {
