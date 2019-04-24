@@ -9,8 +9,8 @@ void Application::InitVariables(void)
 
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUpward(
-		vector3(0.0f, 50.0f, 12.5f), //Position
-		vector3(0.0f, 0.0f, 0.0f),	//Target
+        vector3(0.0f, 28.5f, 40.0f), // Position
+        vector3(0.0f, 0.0f, 15.8f),	//Target
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
@@ -118,9 +118,9 @@ void Application::Display(void)
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
 
-	//Christian - 4/7, 4/17
+	//Christian - 4/7, 4/17 ; Rowan - 4/23, 4/24
 	//Render disc
-	m_pCameraMngr->SetPositionTargetAndUpward(vector3(0.0f, 28.5f, 40.0f), vector3(0.0f, 0.0f, 15.8f), vector3(0.0f, 1.0f, 0.0f));
+	//m_pCameraMngr->SetPositionTargetAndUpward(vector3(0.0f, 28.5f, 40.0f), vector3(0.0f, 0.0f, 15.8f), vector3(0.0f, 1.0f, 0.0f));
 	m_discworld->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), glm::translate(vector3(0.0f, -1.0f, 0.0f)));
 
 	//clear the render list
