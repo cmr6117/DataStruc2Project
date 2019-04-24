@@ -126,6 +126,7 @@ void Application::Update(void)
     matrix4 mPlayer = glm::translate((m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player")))->GetPosition()) * m4Rotation;
     m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
+    // Rowan - 4/24
     // clear collisions
     m_pEntityMngr->ClearCollisions(); 
 
@@ -136,9 +137,6 @@ void Application::Update(void)
     // update entity movement stuff
     // if the grid is false, EntityManager will use standard unoptimized collisions before moving entities
     m_pEntityMngr->Update(TheGrid->Active);
-
-    //m_pEntityMngr->WolfPhysics();
-    //m_pEntityMngr->ApplyForce(vector3(0.01f,0.0f,0.0f), "wolves_" + std::to_string(1));
 
     //Add objects to render list
     m_pEntityMngr->AddEntityToRenderList(-1, true);
