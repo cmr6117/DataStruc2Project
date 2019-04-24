@@ -1,7 +1,6 @@
 #include "Grid.h"
+
 using namespace Simplex;
-
-
 
 Grid::Grid(float worldRadius)
 {

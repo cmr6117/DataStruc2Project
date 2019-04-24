@@ -91,6 +91,9 @@ void Application::Update(void)
 	//Is the arcball active?
 	ArcBall();
 
+    // Rowan - 4/24
+
+
 	//Is the first person camera active?
 	//Christian - 4/17
 	//CameraRotation(); //Disabled for game

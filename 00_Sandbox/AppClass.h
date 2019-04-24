@@ -11,6 +11,7 @@ Date: 2017/06
 #include "imgui\ImGuiObject.h"
 
 #include "MyEntityManager.h"
+#include "Grid.h"
 
 namespace Simplex
 {
@@ -20,6 +21,7 @@ class Application
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager
 
 private:
+    
 	Mesh* m_discworld = nullptr;
 	static ImGuiObject gui; //GUI object
 	bool m_bGUI_Main = true; //show Main GUI window?
