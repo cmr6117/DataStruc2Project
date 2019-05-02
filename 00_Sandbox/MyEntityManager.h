@@ -341,6 +341,12 @@ public:
 	OUTPUT: ---
 	*/
 	void WolfUpdate();
+	/*
+	USAGE: find the wolves' pathfinding
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void SheepUpdate();
 private:
 	/*
 	Usage: constructor

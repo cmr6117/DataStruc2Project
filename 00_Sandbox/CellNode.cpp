@@ -18,10 +18,9 @@ float Simplex::CellNode::GetRadius() { return m_fRadius; }
 
 void Simplex::CellNode::HandleCollisions()
 {
-	// if there's 1 or fewer entities in this cell, there's nothing to collide with
-	if (EntitiesInside.size() < 2)
-		return;
-
+    // if there's 1 or fewer entities in this cell, there's nothing to collide with
+    if (EntitiesInside.size() < 2)
+        return;
 
     for (uint i = 0; i < EntitiesInside.size(); i++) 
     {
