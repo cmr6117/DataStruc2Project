@@ -671,7 +671,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 		}
 
 		//seek sheep
-		directionVec = glm::normalize(GetEntity(closestSheepIndex[i])->GetPosition() - entityPos);
+		directionVec = glm::normalize(GetEntity(closestSheepIndex[i])->GetPosition() - entityPos) * 0.1f;
 		directionVec.y = 0.0f;
 		m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 		directionVec = ZERO_V3;
