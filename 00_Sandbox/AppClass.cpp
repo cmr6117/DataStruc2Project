@@ -1,9 +1,9 @@
 #include "AppClass.h"
-#include "Grid.h"
 
 using namespace Simplex;
 
 Grid* TheGrid = nullptr;
+uint numSheep = 0;
 
 // Rowan - 4/24
 enum class EntityTypes { Sheep, Wolf, Fence, Player };
@@ -26,21 +26,14 @@ void Application::InitVariables(void)
     TheGrid = new Grid(DiscRadius);
 
     m_pEntityMngr = MyEntityManager::GetInstance(); //Initialize the entity manager
-    //m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves");
-    //m_pEntityMngr->UsePhysicsSolver();
 
+	//Spawn in 20 sheep to start
     for (int i = 0; i < 20; i++)
     {
-        m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(i), (uint)EntityTypes::Sheep);
-        vector3 v3Position = vector3(rand() % 25 - 10 + 15, 0.0f, rand() % 25 - 10);
-
-        //m_pEntityMngr->SetModelMatrix(m4Position * glm::scale(vector3(1.5f)));
-        m_pEntityMngr->UsePhysicsSolver(true, "sheep_" + std::to_string(i));
-        m_pEntityMngr->SetMass(1.5, "sheep_" + std::to_string(i));
-        matrix4 m4Position = glm::translate(v3Position);
-        m_pEntityMngr->SetModelMatrix(m4Position);
+		SpawnRandomSheep();
     }
 
+	//Spawn in 4 wolves
     for (int i = 0; i < 4; i++)
     {
         m_pEntityMngr->AddEntity("Minecraft\\Zombie.obj", "wolves_" + std::to_string(i), (uint)EntityTypes::Wolf);
@@ -61,13 +54,12 @@ void Application::InitVariables(void)
 
     //Mike - 4/7
     //Adding player entity to world
-
-    m_pEntityMngr->AddEntity("Minecraft\\Creeper.obj", "Player", (uint)EntityTypes::Player);
+    m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Player", (uint)EntityTypes::Player);
     m_pEntityMngr->UsePhysicsSolver(true, "Player");
-    m_pEntityMngr->SetMass(1.5, "Player");
+    m_pEntityMngr->SetMass(1.0, "Player");
 
     //Mike 4/17 - Generating Fence Perimeter
-    for (int i = 0; i <= 35; i++)
+    for (int i = 0; i < 35; i++)
     {
         float angle = 2 * PI * i / 35;
         float x = 33 * sin(angle);
@@ -76,6 +68,7 @@ void Application::InitVariables(void)
         m_pEntityMngr->AddEntity("Minecraft\\fence_long.obj", "fence_" + std::to_string(i), (uint)EntityTypes::Fence);
         vector3 v3fencePosition = vector3(x, 0.f, y);
         matrix4 m4Rotation = glm::rotate(IDENTITY_M4, angle, glm::vec3(0, 1.0f, 0));
+		m_pEntityMngr->SetPosition(v3fencePosition, "fence" + std::to_string(i));
         matrix4 m4fencePosition = glm::translate(v3fencePosition) * m4Rotation;
         m_pEntityMngr->SetModelMatrix(m4fencePosition);
         m_pEntityMngr->GetRigidBody("fence_" + std::to_string(i))->SetModelMatrix(m4fencePosition);
@@ -87,6 +80,13 @@ void Application::InitVariables(void)
 
     m_iClock = m_pSystem->GenClock();
     m_pSystem->StartClock(m_iClock);
+
+	//Pass in grid to all starting entities
+	for (int i = 0; i < m_pEntityMngr->GetEntityCount(); i++)
+	{
+		m_pEntityMngr->GetEntity(i)->SetGrid(TheGrid);
+		m_pEntityMngr->GetEntity(i)->AssignToCell();
+	}
 }
 
 void Application::Update(void)
@@ -123,7 +123,7 @@ void Application::Update(void)
     //Mike - 4/7
     //Set model matrix to the player, rotate based of direction from last WASD input (4/14)
     matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians((float)fDirection), glm::vec3(0, 1.0f, 0));
-    matrix4 mPlayer = glm::translate((m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player")))->GetPosition()) * m4Rotation;
+    matrix4 mPlayer = glm::translate((m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player")))->GetPosition());
     m_pEntityMngr->SetModelMatrix(mPlayer, "Player");
 
     // clear collisions
@@ -176,45 +176,83 @@ void Application::Release(void)
     ShutdownGUI();
 }
 
+//Generates fence in fixed position
 void Application::GeneratePen(MyEntityManager* m_pInstance)
 {
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_1", 2);
     vector3 v3fencePosition = vector3(-21.0f, 0, -4.0f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_1");
     matrix4 m4fencePosition = glm::translate(v3fencePosition);
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_1")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_2", 2);
-    v3fencePosition = vector3(-14.0f, 0, -4.0f);
+    v3fencePosition = vector3(-14.0f, 0, -4.1f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_2");
     m4fencePosition = glm::translate(v3fencePosition);
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_2")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_3", 2);
     v3fencePosition = vector3(-21.0f, 0, 10.0f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_3");
     m4fencePosition = glm::translate(v3fencePosition);
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_3")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_4", 2);
-    v3fencePosition = vector3(-14.0f, 0, 10.0f);
+    v3fencePosition = vector3(-14.0f, 0, 10.1f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_4");
     m4fencePosition = glm::translate(v3fencePosition);
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_4")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_5", 2);
     v3fencePosition = vector3(-22.0f, 0, 2.f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_5");
     m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_5")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence_long.obj", "fence_pen_6", 2);
-    v3fencePosition = vector3(-22.0f, 0, 9.f);
+    v3fencePosition = vector3(-22.1f, 0, 9.f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_6");
     m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_6")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence.obj", "fence_pen_7", 2);
     v3fencePosition = vector3(-8.0f, 0, 9.5f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_7");
     m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_7")->SetModelMatrix(m4fencePosition);
 
     m_pInstance->AddEntity("Minecraft\\fence.obj", "fence_pen_8", 2);
-    v3fencePosition = vector3(-8.0f, 0, -3.f);
+    v3fencePosition = vector3(-8.1f, 0, -3.f);
+	m_pEntityMngr->SetPosition(v3fencePosition, "fence_pen_8");
     m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
     m_pInstance->SetModelMatrix(m4fencePosition);
+	m_pEntityMngr->GetRigidBody("fence_pen_8")->SetModelMatrix(m4fencePosition);
+
+}
+
+//Spawns a sheep in a random position
+void Simplex::Application::SpawnRandomSheep(void)
+{
+	//Add entity, generate random pos
+	m_pEntityMngr->AddEntity("Minecraft\\Steve.obj", "sheep_" + std::to_string(numSheep), (uint)EntityTypes::Sheep);
+	vector3 v3Position = vector3(rand() % 25 - 10 + 15, 0.0f, rand() % 25 - 10);
+
+	m_pEntityMngr->UsePhysicsSolver(true, "sheep_" + std::to_string(numSheep));
+	m_pEntityMngr->SetMass(1.5, "sheep_" + std::to_string(numSheep));
+	matrix4 m4Position = glm::translate(v3Position);
+	m_pEntityMngr->SetModelMatrix(m4Position);
+
+	//Pass in grid to the entity, it will always be the most recent entity added
+	m_pEntityMngr->GetEntity((m_pEntityMngr->GetEntityCount()-1))->SetGrid(TheGrid);
+
+	//increment num of sheep so we can name them accordingly
+	numSheep++;
+	m_pEntityMngr->SetSheepNum(numSheep);
 }

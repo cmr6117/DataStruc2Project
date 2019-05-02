@@ -11,7 +11,7 @@ Date: 2017/06
 #include "imgui\ImGuiObject.h"
 
 #include "MyEntityManager.h"
-
+#include "Grid.h"
 namespace Simplex
 {
 	//Adding Application to the Simplex namespace
@@ -147,6 +147,7 @@ private:
 	*/
 	void Release(void);
 	void GeneratePen(MyEntityManager * m_pInstance);
+	void SpawnRandomSheep(void);
 #pragma endregion
 
 #pragma region Main Loop

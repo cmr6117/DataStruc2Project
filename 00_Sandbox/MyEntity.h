@@ -11,6 +11,7 @@ namespace Simplex
 {
 
 //System Class
+class Grid;
 class MyEntity
 {
 	bool m_bInMemory = false; //loaded flag
@@ -39,8 +40,12 @@ class MyEntity
 
 	uint m_nEntityType = -1;
 
+	Grid* activeGrid = nullptr;
+	vector3 lastPos = ZERO_V3;
+
 public:
 	float step = 0.f;
+	bool needReassign = true;
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:
@@ -295,6 +300,13 @@ public:
 	*/
 	void UsePhysicsSolver(bool a_bUse = true);
 
+	//Set grid variable
+	void SetGrid(Grid* gr);
+
+	//Assign entity to local list of cell it's occupying
+	void AssignToCell();
+
+
 private:
 	/*
 	Usage: Deallocates member fields
@@ -313,9 +325,3 @@ private:
 } //namespace Simplex
 
 #endif //__MYENTITY_H_
-
-/*
-USAGE:
-ARGUMENTS: ---
-OUTPUT: ---
-*/

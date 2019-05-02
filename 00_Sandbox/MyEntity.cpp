@@ -1,4 +1,5 @@
 #include "MyEntity.h"
+#include "Grid.h"
 using namespace Simplex;
 std::map<String, MyEntity*> MyEntity::m_IDMap;
 
@@ -357,6 +358,11 @@ void Simplex::MyEntity::Update(void)
         quaternion temp = m_pSolver->GetOrientation();
         SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * ToMatrix4(temp) *  glm::scale(m_pSolver->GetSize()));
     }
+
+	if (needReassign)
+	{
+		AssignToCell();
+	}
 }
 void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 {
@@ -367,43 +373,106 @@ void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 
 	//If colliding with fence, must ensure entity cannot pass it, 
 	//but don't trigger if fences collide with other fences
-	if (a_pOther->m_sUniqueID.find("fence") != std::string::npos &&
-		!(m_sUniqueID.find("fence") != std::string::npos))
+	if (a_pOther->m_sUniqueID.find("fence") != std::string::npos && !(m_sUniqueID.find("fence") != std::string::npos))
 	{
-		vector3 newPos = vector3(GetPosition());
-		matrix4 m4Rotation;
+		float dirToCenter = glm::distance(GetPosition(), ZERO_V3) * 10;
 
-		if (GetDirection().find("North") != std::string::npos) 
-		{ 
-			newPos.z += step*2.0f; 
-			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(180.f), glm::vec3(0, 1.0f, 0));
-		}
-		if (GetDirection().find("South") != std::string::npos)
+		//Fence Pen Collision
+		if (a_pOther->m_sUniqueID.find("pen") != std::string::npos && !(m_sUniqueID.find("pen") != std::string::npos))
 		{
-			newPos.z -= step * 2.0f;
-			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(0.f), glm::vec3(0, 1.0f, 0));
+			vector3 fenceForce = ZERO_V3;
+
+			if (GetDirection().find("North") != std::string::npos)
+			{
+				fenceForce.z += dirToCenter;
+			}
+			if (GetDirection().find("South") != std::string::npos)
+			{
+				fenceForce.z -= dirToCenter;
+			}
+			if (GetDirection().find("East") != std::string::npos)
+			{
+				fenceForce.x -= dirToCenter;
+			}
+			if (GetDirection().find("West") != std::string::npos)
+			{
+				fenceForce.x += dirToCenter;
+			}
+
+			SetDirection(""); // clear direction
+			ApplyForce(fenceForce);
 		}
-		if (GetDirection().find("East") != std::string::npos)
+		//Fence Perimeter Collision
+		else
 		{
-			newPos.x -= step * 2.0f;
-			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
+			if (GetPosition().x < 0)
+				ApplyForce(vector3(dirToCenter, 0.0f, 0.0f));
+			else
+				ApplyForce(vector3(-dirToCenter, 0.0f, 0.0f));
+
+			if (GetPosition().z < 0)
+				ApplyForce(vector3(0.0f, 0.0f, dirToCenter));
+			else
+				ApplyForce(vector3(0.0f, 0.0f, -dirToCenter));
 		}
-		if (GetDirection().find("West") != std::string::npos)
-		{
-			newPos.x += step * 2.0f;
-			m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(-90.f), glm::vec3(0, 1.0f, 0));
-		}
-
-		SetPosition(newPos);
-		ClearCollisionList();
-		a_pOther->ClearCollisionList();
-
-
-		matrix4 col = glm::translate(GetPosition()) * m4Rotation;
-		SetModelMatrix(col);
 	}
 }
 void Simplex::MyEntity::UsePhysicsSolver(bool a_bUse)
 {
     m_bUsePhysicsSolver = a_bUse;
+}
+
+void Simplex::MyEntity::SetGrid(Grid * gr)
+{
+	activeGrid = gr;
+}
+
+//Entity determines where to assign itself within the grid structure
+void Simplex::MyEntity::AssignToCell()
+{
+	//Find distance from entity to origin of grid
+	//Since entities can spread across multiple cells, we should check both it's max and min positions instead of center
+	vector3 minPos = GetRigidBody()->GetMinGlobal();
+	vector3 maxPos = GetRigidBody()->GetMaxGlobal();
+
+	float distXmin = glm::distance(vector3((-activeGrid->WorldRadius), 0.0f, 0.0f), vector3(minPos.x,0.0f,0.0f));
+	float distZmin = glm::distance(vector3(0.0f, 0.0f,(-activeGrid->WorldRadius)), vector3(0.0f, 0.0f, minPos.z));
+	float cellRowMin = ceil(distXmin / activeGrid->CellSize);
+	float cellColMin = ceil(distZmin / activeGrid->CellSize);
+
+	float distXmax = glm::distance(vector3((-activeGrid->WorldRadius), 0.0f, 0.0f), vector3(maxPos.x, 0.0f, 0.0f));
+	float distZmax = glm::distance(vector3(0.0f, 0.0f, (-activeGrid->WorldRadius)), vector3(0.0f, 0.0f, maxPos.z));
+	float cellRowMax = ceil(distXmax / activeGrid->CellSize);
+	float cellColMax = ceil(distZmax / activeGrid->CellSize);
+
+	int currentRow = 0; 
+	int currentColumn = 0; 
+	int numCells = activeGrid->NUM_CELLS;
+
+	for (int i = 0; i < activeGrid->CellList.size(); i++)
+	{
+		// iterate over local column local row until they match row and column, add entity to CellList[i]
+		if ((i + 1) % numCells == 0)
+		{
+			currentRow++;
+			currentColumn = 0;
+		}
+
+		if (currentRow == cellRowMin && currentColumn == cellColMin)
+		{
+			activeGrid->CellList[i]->AddLocalEntity(this);
+			needReassign = false;
+			break;
+		}
+
+		//If the maximum point is not in the same cell as the min point, add the entity to that cell as well
+		if (currentRow == cellRowMax && currentColumn == cellColMax && (cellRowMax != cellRowMin && cellColMax != cellRowMin))
+		{
+			activeGrid->CellList[i]->AddLocalEntity(this);
+			needReassign = false;
+			break;
+		}
+
+		currentColumn++;
+	}
 }
