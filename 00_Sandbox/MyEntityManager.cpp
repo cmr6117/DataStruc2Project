@@ -620,29 +620,29 @@ void Simplex::MyEntityManager::WolfUpdate()
 		//check for collision of radius
 		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
 
-		//check collisions with player
-		if (true)//check if the grid for wolves is the same as the player grid (add in later)
-		{
-			//check for collision of radius
-			if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
+			//check collisions with player
+			if (true)//check if the grid for wolves is the same as the player grid (add in later)
 			{
-				uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
+				//check for collision of radius
+				if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
+				{
+					uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
 
-				//normalize the direction vector distanceBetween/m_playerRadius
-				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+					//normalize the direction vector distanceBetween/m_playerRadius
+					directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
-				if (directionVec.z > 0) { currentDir += "South"; }
-				else { currentDir += "North"; }
-				if (directionVec.x > 0) { currentDir += "East"; }
-				else { currentDir += "West"; }
+					if (directionVec.z > 0) { currentDir += "South"; }
+					else { currentDir += "North"; }
+					if (directionVec.x > 0) { currentDir += "East"; }
+					else { currentDir += "West"; }
 
-				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
-				GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
+					GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->SetDirection(currentDir);
+					GetEntity(GetEntityIndex("wolves_" + std::to_string(i)))->step = 0.3f;
 
-				//apply the force
-				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
+					//apply the force
+					m_mEntityArray[entityIndex]->ApplyForce(directionVec);
+				}
 			}
-		}
 
 		//find closest sheep
 		if (true) //find the closest sheep every second or so
@@ -651,7 +651,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 			{
 				closestSheepIndex.push_back(GetEntityIndex("sheep_" + std::to_string(0)));
 			}
-			
+
 			//vector3 newSheepPos;
 			for (int j = 0; j < 20; j++)
 			{
@@ -659,7 +659,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 				uint sheepIndex = GetEntityIndex("sheep_" + std::to_string(j));
 				vector3 oldSheepDirection = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
 				oldSheepDirection.y = 0.0f;
-				directionVec = GetEntity(sheepIndex)->GetPosition(); - entityPos;
+				directionVec = GetEntity(sheepIndex)->GetPosition(); -entityPos;
 				directionVec.y = 0.0f;
 				float newSheepDistance = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
 				if (newSheepDistance < sqrt(pow(oldSheepDirection.x, 2.0f) + pow(oldSheepDirection.z, 2.0f)))
@@ -671,8 +671,12 @@ void Simplex::MyEntityManager::WolfUpdate()
 		}
 
 		//seek sheep
-		directionVec = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
+		directionVec = glm::normalize(GetEntity(closestSheepIndex[i])->GetPosition() - entityPos);
+		directionVec.y = 0.0f;
 		m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 		directionVec = ZERO_V3;
 	}
+
+	//check sheep
 }
+
