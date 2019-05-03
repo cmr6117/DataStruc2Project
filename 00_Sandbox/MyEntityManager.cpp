@@ -190,18 +190,18 @@ void Simplex::MyEntityManager::Update(bool UsingGrid)
                 }
             }
             //Update each entity
-            m_mEntityArray[i]->Update();
+            //m_mEntityArray[i]->Update();
         }
     }
     else 
     {
-        for (uint i = 0; i < m_uEntityCount; i++)
-        {
-            //Update each entity
-            m_mEntityArray[i]->Update();
-        }
+        //for (uint i = 0; i < m_uEntityCount; i++)
+        //{
+        //    //Update each entity
+        //    m_mEntityArray[i]->Update();
+        //}
     }
-
+	m_mEntityArray[GetEntityIndex("Player")]->Update(0.15f);
     EntityPhysics();
     WolfUpdate();
 }
@@ -578,6 +578,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 			}
 		}
+		m_mEntityArray[entityIndex]->Update(0.06f);
 	}
 }
 
@@ -649,6 +650,14 @@ void Simplex::MyEntityManager::WolfUpdate()
 					closestSheepIndex[i] = sheepIndex;
 					oldSheepDirection = directionVec;
 				}
+				//push sheep away if wolf gets close enough
+				if (newSheepDistance < 5.0f)
+				{
+					//apply the force
+					vector3 pushSheep = glm::normalize(GetEntity(sheepIndex)->GetPosition() - entityPos) * 0.1f;
+					pushSheep.y = 0.0f;
+					m_mEntityArray[sheepIndex]->ApplyForce(pushSheep);
+				}
 			}
 		}
 
@@ -657,6 +666,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 		directionVec.y = 0.0f;
 		m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 		directionVec = ZERO_V3;
+		m_mEntityArray[entityIndex]->Update(0.075f);
 	}
 
 	//check sheep

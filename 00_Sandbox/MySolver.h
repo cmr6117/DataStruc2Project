@@ -141,7 +141,7 @@ namespace Simplex
 		ARGUMENTS: ---
 		OUTPUT: ---
 		*/
-		void Update(void);
+		void Update(float getMax);
 		/*
 		USAGE: Resolve the collision between two solvers
 		ARGUMENTS: MySolver* a_pOther -> other solver to resolve collision with

@@ -292,7 +292,7 @@ public:
 	ARGUMENTS: ---
 	OUTPUT: ---
 	*/
-	void Update(void);
+	void Update(float getMax);
 	/*
 	USAGE: Resolves using physics solver or not in the update
 	ARGUMENTS: bool a_bUse = true -> using physics solver?

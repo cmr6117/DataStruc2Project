@@ -345,14 +345,14 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 {
     m_pSolver->ApplyForce(a_v3Force);
 }
-void Simplex::MyEntity::Update(void)
+void Simplex::MyEntity::Update(float getMax)
 {
     if (m_bUsePhysicsSolver)
     {
         if (m_pRigidBody->GetCollidingCount() > 0)
             m_pSolver->SetIsColliding(true);
 
-        m_pSolver->Update();
+        m_pSolver->Update(getMax);
 
         //SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * glm::scale(m_pSolver->GetSize()));
         quaternion temp = m_pSolver->GetOrientation();
