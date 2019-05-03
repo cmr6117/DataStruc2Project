@@ -36,13 +36,13 @@ void Simplex::Grid::Init(float worldRadius)
 
 void Simplex::Grid::Update()
 {
-    // handle collisions within each cell
+	DisplayGrid();
+
+	// handle collisions within each cell
     for (uint i = 0; i < CellList.size(); i++)
     {
         CellList[i]->HandleCollisions();
     }
-
-	DisplayGrid();
 }
 
 //Displays the grid for debug purposes

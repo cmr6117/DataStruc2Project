@@ -359,16 +359,13 @@ void Simplex::MyEntity::Update(float getMax)
         SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * ToMatrix4(temp) *  glm::scale(m_pSolver->GetSize()));
     }
 
-	if (needReassign)
+	if (activeGrid->Active)
 	{
 		AssignToCell();
 	}
 
-	//If the entity is a sheep, check if it's scored
-	if (m_nEntityType == 0 && m_activeSheep)
-	{
-		
-	}
+	quaternion temp = m_pSolver->GetOrientation();
+	GetRigidBody()->SetModelMatrix(glm::translate(m_pSolver->GetPosition()) * ToMatrix4(temp) *  glm::scale(m_pSolver->GetSize()));
 }
 void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 {
@@ -436,47 +433,74 @@ void Simplex::MyEntity::SetGrid(Grid * gr)
 //Entity determines where to assign itself within the grid structure
 void Simplex::MyEntity::AssignToCell()
 {
+	//entity removes itself from any cells it was in, in preparation of reassignment
+	//This was previously the job of RefreshEntities() in CellNode.cpp, but that seemed to slow it down too much
+	if (cellIndices.size() != 0)
+	{
+		for (int i = 0; i < cellIndices.size(); i++)
+		{
+			activeGrid->CellList[cellIndices[i]]->RemoveLocalEntity(m_sUniqueID);
+		}
+
+		cellIndices.clear();
+	}
+	
 	//Find distance from entity to origin of grid
-	//Since entities can spread across multiple cells, we should check both it's max and min positions instead of center
+	//Since entities can spread across multiple cells (up to 3), check min, max, and center to ensure that any cell it's in is covered
 	vector3 minPos = GetRigidBody()->GetMinGlobal();
 	vector3 maxPos = GetRigidBody()->GetMaxGlobal();
+	vector3 cenPos = GetRigidBody()->GetCenterGlobal();
 
 	float distXmin = glm::distance(vector3((-activeGrid->WorldRadius), 0.0f, 0.0f), vector3(minPos.x,0.0f,0.0f));
 	float distZmin = glm::distance(vector3(0.0f, 0.0f,(-activeGrid->WorldRadius)), vector3(0.0f, 0.0f, minPos.z));
 	float cellRowMin = ceil(distXmin / activeGrid->CellSize);
 	float cellColMin = ceil(distZmin / activeGrid->CellSize);
 
+	float distXcen = glm::distance(vector3((-activeGrid->WorldRadius), 0.0f, 0.0f), vector3(cenPos.x, 0.0f, 0.0f));
+	float distZcen = glm::distance(vector3(0.0f, 0.0f, (-activeGrid->WorldRadius)), vector3(0.0f, 0.0f, cenPos.z));
+	float cellRowCen = ceil(distXcen / activeGrid->CellSize);
+	float cellColCen = ceil(distZcen / activeGrid->CellSize);
+
 	float distXmax = glm::distance(vector3((-activeGrid->WorldRadius), 0.0f, 0.0f), vector3(maxPos.x, 0.0f, 0.0f));
 	float distZmax = glm::distance(vector3(0.0f, 0.0f, (-activeGrid->WorldRadius)), vector3(0.0f, 0.0f, maxPos.z));
 	float cellRowMax = ceil(distXmax / activeGrid->CellSize);
 	float cellColMax = ceil(distZmax / activeGrid->CellSize);
 
-	int currentRow = 0; 
-	int currentColumn = 0; 
+	int currentRow = 1; 
+	int currentColumn = 1; 
 	int numCells = activeGrid->NUM_CELLS;
 
 	for (int i = 0; i < activeGrid->CellList.size(); i++)
 	{
+		//Flag to make sure an entity isn't adding itself to a local list multiple times, in case the different points are in the same cell
+		bool alreadyAdded = false;
+
 		// iterate over local column local row until they match row and column, add entity to CellList[i]
+		if (currentRow == cellRowMin && currentColumn == cellColMin)
+		{
+			activeGrid->CellList[i]->AddLocalEntity(this);
+			cellIndices.push_back(i);
+			alreadyAdded = true;
+		}
+
+		if (currentRow == cellRowCen && currentColumn == cellColCen && !alreadyAdded)
+		{
+			activeGrid->CellList[i]->AddLocalEntity(this);
+			cellIndices.push_back(i);
+			alreadyAdded = true;
+		}
+
+		if (currentRow == cellRowMax && currentColumn == cellColMax && !alreadyAdded)
+		{
+			activeGrid->CellList[i]->AddLocalEntity(this);
+			cellIndices.push_back(i);
+			alreadyAdded = true;
+		}
+
 		if ((i + 1) % numCells == 0)
 		{
 			currentRow++;
 			currentColumn = 0;
-		}
-
-		if (currentRow == cellRowMin && currentColumn == cellColMin)
-		{
-			activeGrid->CellList[i]->AddLocalEntity(this);
-			needReassign = false;
-			break;
-		}
-
-		//If the maximum point is not in the same cell as the min point, add the entity to that cell as well
-		if (currentRow == cellRowMax && currentColumn == cellColMax && (cellRowMax != cellRowMin && cellColMax != cellRowMin))
-		{
-			activeGrid->CellList[i]->AddLocalEntity(this);
-			needReassign = false;
-			break;
 		}
 
 		currentColumn++;

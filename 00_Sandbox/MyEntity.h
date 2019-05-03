@@ -47,6 +47,7 @@ public:
 	float step = 0.f; //var to hold movement step between frames
 	bool needReassign = true; //flag to reassign itself to new cell
 	bool m_activeSheep = false; //only true for uneaten sheep;
+	std::vector<int> cellIndices;
 
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity

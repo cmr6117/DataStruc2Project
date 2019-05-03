@@ -21,6 +21,8 @@ class MyEntityManager
 	uint m_playerRadius = 5; //radius around player that will repel other entities
 	uint m_numSheep = 20; //number of sheep, need to track in case we add some for spatial optimization testing
 	uint m_RescuedSheep = 0; //Sheep in pen, will be used as the score
+	uint sheepScare = 5;
+
 	std::vector<uint> closestSheepIndex; //record the closest sheep to the wolves
 	std::vector<vector3> closestSheepDirection; //record the the direction the wolf is going in
 	std::vector<MyEntity*> RescuedSheep;

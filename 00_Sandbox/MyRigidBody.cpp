@@ -94,6 +94,8 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 	m_m4ToWorld = a_m4ModelMatrix;
 
 	m_v3CenterG = vector3(m_m4ToWorld * vector4(m_v3CenterL, 1.0f));
+	m_v3MinG = vector3(m_m4ToWorld * vector4(m_v3MinL, 1.0f));
+	m_v3MaxG = vector3(m_m4ToWorld * vector4(m_v3MaxL, 1.0f));
 }
 //The big 3
 MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList)

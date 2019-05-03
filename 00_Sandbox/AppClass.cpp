@@ -68,10 +68,10 @@ void Application::InitVariables(void)
         m_pEntityMngr->AddEntity("Minecraft\\fence_long.obj", "fence_" + std::to_string(i), (uint)EntityTypes::Fence);
         vector3 v3fencePosition = vector3(x, 0.f, y);
         matrix4 m4Rotation = glm::rotate(IDENTITY_M4, angle, glm::vec3(0, 1.0f, 0));
-		m_pEntityMngr->SetPosition(v3fencePosition, "fence" + std::to_string(i));
+		//m_pEntityMngr->SetPosition(v3fencePosition, "fence" + std::to_string(i));
         matrix4 m4fencePosition = glm::translate(v3fencePosition) * m4Rotation;
         m_pEntityMngr->SetModelMatrix(m4fencePosition);
-        m_pEntityMngr->GetRigidBody("fence_" + std::to_string(i))->SetModelMatrix(m4fencePosition);
+        //m_pEntityMngr->GetRigidBody("fence_" + std::to_string(i))->SetModelMatrix(m4fencePosition);
     }
 
     //Mike - 4/16 Generating Pen
@@ -85,7 +85,7 @@ void Application::InitVariables(void)
 	for (int i = 0; i < m_pEntityMngr->GetEntityCount(); i++)
 	{
 		m_pEntityMngr->GetEntity(i)->SetGrid(TheGrid);
-		m_pEntityMngr->GetEntity(i)->AssignToCell();
+		m_pEntityMngr->GetEntity(i)->AssignToCell(); //PAssigning a cell initially ensures all fences get assigned, but they won't be called each update
 	}
 }
 
@@ -230,7 +230,6 @@ void Application::GeneratePen(MyEntityManager* m_pInstance)
     m4fencePosition = glm::translate(v3fencePosition) * glm::rotate(IDENTITY_M4, glm::radians(90.f), glm::vec3(0, 1.0f, 0));
     m_pInstance->SetModelMatrix(m4fencePosition);
 	m_pEntityMngr->GetRigidBody("fence_pen_8")->SetModelMatrix(m4fencePosition);
-
 }
 
 //Spawns a sheep in a random position

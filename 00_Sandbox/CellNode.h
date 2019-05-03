@@ -33,7 +33,10 @@ namespace Simplex
 		//Remove entity from EntitiesInside list, return type is for RefreshEntities
 		std::vector<MyEntity*>::iterator RemoveLocalEntity(uint a_uIndex);
 
+		//Remove entity from EntitiesInside list by uniqueID
+		void RemoveLocalEntity(String uniqueID);
+
 		//Refresh EntitiesInside list to see if any have moved out
-		void RefreshEntities();
+		//void RefreshEntities();
 	};
 }

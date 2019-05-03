@@ -201,9 +201,11 @@ void Simplex::MyEntityManager::Update(bool UsingGrid)
         //    m_mEntityArray[i]->Update();
         //}
     }
+
+	EntityPhysics();
+	WolfUpdate();
 	m_mEntityArray[GetEntityIndex("Player")]->Update(0.15f);
-    EntityPhysics();
-    WolfUpdate();
+
 }
 void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID, uint a_nEntityType)
 {
@@ -566,8 +568,9 @@ void Simplex::MyEntityManager::EntityPhysics()
 				uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
 				if (distanceBetween < m_playerRadius)
 				{
-					//normalize the direction vector distanceBetween/m_playerRadius
-					directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+				//normalize the direction vector distanceBetween/m_playerRadius
+				//directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+				directionVec = glm::normalize(directionVec);
 
 					//Set a direction for use in fence collision
 					if (directionVec.z > 0) { currentDir += "South"; }
@@ -579,7 +582,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 					GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
 
 					//apply the force
-					m_mEntityArray[entityIndex]->ApplyForce(directionVec * 10);
+					m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 				}
 			}
 		}
@@ -658,27 +661,30 @@ void Simplex::MyEntityManager::WolfUpdate()
 			}
 
 			//vector3 newSheepPos;
-			for (int j = 0; j < 20; j++)
+			for (int j = 0; j < m_numSheep; j++)
 			{
 				//find the distance/direction vector
 				uint sheepIndex = GetEntityIndex("sheep_" + std::to_string(j));
-				vector3 oldSheepDirection = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
-				oldSheepDirection.y = 0.0f;
-				directionVec = GetEntity(sheepIndex)->GetPosition(); -entityPos;
-				directionVec.y = 0.0f;
-				float newSheepDistance = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-				if (newSheepDistance < sqrt(pow(oldSheepDirection.x, 2.0f) + pow(oldSheepDirection.z, 2.0f)))
+				
+				//Only treat sheep as a seekable target if the sheep isn't in pen
+				if (!m_mEntityArray[sheepIndex]->IsInPen())
 				{
-					closestSheepIndex[i] = sheepIndex;
-					oldSheepDirection = directionVec;
-				}
-				//push sheep away if wolf gets close enough
-				if (newSheepDistance < 5.0f)
-				{
-					//apply the force
-					vector3 pushSheep = glm::normalize(GetEntity(sheepIndex)->GetPosition() - entityPos) * 0.1f;
-					pushSheep.y = 0.0f;
-					m_mEntityArray[sheepIndex]->ApplyForce(pushSheep);
+					vector3 oldSheepDirection = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
+					oldSheepDirection.y = 0.0f;
+					directionVec = GetEntity(sheepIndex)->GetPosition() - entityPos;
+					directionVec.y = 0.0f;
+					float newSheepDistance = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
+					if (newSheepDistance < sqrt(pow(oldSheepDirection.x, 2.0f) + pow(oldSheepDirection.z, 2.0f)))
+					{
+						closestSheepIndex[i] = sheepIndex;
+						oldSheepDirection = directionVec;
+					}
+					//push sheep away if wolf gets close enough
+					if (newSheepDistance < sheepScare)
+					{
+						//apply the force
+						m_mEntityArray[sheepIndex]->ApplyForce(glm::normalize(directionVec));
+					}
 				}
 			}
 		}
