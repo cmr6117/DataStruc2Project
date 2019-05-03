@@ -576,7 +576,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 					GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
 
 					//apply the force
-					m_mEntityArray[entityIndex]->ApplyForce(directionVec);
+					m_mEntityArray[entityIndex]->ApplyForce(directionVec * 10.0f);
 				}
 			}
 		}
