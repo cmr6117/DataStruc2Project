@@ -36,11 +36,11 @@ void Simplex::CellNode::HandleCollisions()
 			uint breakHere;
 		}
 
-        for (uint j = i + 1; j < EntitiesInside.size(); j++)
+        for (uint j = 0; j < EntitiesInside.size(); j++)
         {
-            // ignore self
-            //if (i == j)
-            //    continue;
+             //ignore self
+            if (i == j)
+                continue;
 
             MyEntity* other = EntitiesInside[j];
 
@@ -48,6 +48,21 @@ void Simplex::CellNode::HandleCollisions()
             {
                 current->ResolveCollision(other);
             }
+
+			//Since we want sheep collision to go off when they entire the radius, not the rigidbody collider
+			//We have to check for that seperately
+			if ((current->GetUniqueID().find("sheep") != std::string::npos) && (other->GetUniqueID().find("Player") != std::string::npos) ||
+				(current->GetUniqueID().find("sheep") != std::string::npos) && (other->GetUniqueID().find("wolves") != std::string::npos))
+			{
+				vector3 entityPos = other->GetPosition();
+				vector3 directionVec = entityPos - current->GetPosition();
+				directionVec.y = 0.0f;
+
+				if (directionVec.x < 5 && directionVec.z < 5)
+				{
+					current->ResolveCollision(other);
+				}
+			}
         }
     }
 

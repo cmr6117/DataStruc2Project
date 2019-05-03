@@ -419,6 +419,36 @@ void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 				ApplyForce(vector3(0.0f, 0.0f, -dirToCenter));
 		}
 	}
+
+	//Sheep pushback from player and wolf
+	if ((a_pOther->m_sUniqueID.find("Player") != std::string::npos) && (m_sUniqueID.find("sheep") != std::string::npos) || 
+		(a_pOther->m_sUniqueID.find("wolves") != std::string::npos) && (m_sUniqueID.find("sheep") != std::string::npos))
+	{
+		//If the sheep isn't in the pen, proceed with physics calculation
+		if (!IsInPen())
+		{
+			vector3 entityPos = a_pOther->GetPosition();
+			vector3 directionVec = GetPosition() - entityPos;
+			directionVec.y = 0.0f;
+			String currentDir = "";
+			
+			//normalize the direction vector distanceBetween/m_playerRadius
+			directionVec = glm::normalize(directionVec);
+
+			//Set a direction for use in fence collision
+			if (directionVec.z > 0) { currentDir += "South"; }
+			else { currentDir += "North"; }
+			if (directionVec.x > 0) { currentDir += "East"; }
+			else { currentDir += "West"; }
+
+			SetDirection(currentDir);
+			step = 0.3f;
+
+			//apply the force
+			ApplyForce(directionVec);
+			Update(0.05f);
+		}
+	}
 }
 void Simplex::MyEntity::UsePhysicsSolver(bool a_bUse)
 {

@@ -176,7 +176,9 @@ void Simplex::MyEntityManager::ClearCollisions()
 }
 void Simplex::MyEntityManager::Update(bool UsingGrid)
 {
-    if (!UsingGrid)
+    //If they're using the grid, the update logic will be handled naturally in the CellNode,
+	//so we only need to account for the casr where they're not or any universal processes
+	if (!UsingGrid)
     {
         //check collisions
         for (uint i = 0; i < m_uEntityCount; i++)
@@ -192,20 +194,12 @@ void Simplex::MyEntityManager::Update(bool UsingGrid)
             //Update each entity
             //m_mEntityArray[i]->Update();
         }
-    }
-    else 
-    {
-        //for (uint i = 0; i < m_uEntityCount; i++)
-        //{
-        //    //Update each entity
-        //    m_mEntityArray[i]->Update();
-        //}
+
+		EntityPhysics();
     }
 
-	EntityPhysics();
-	WolfUpdate();
+	WolfUpdate(); //Wolves need to seek across cells, even with spatial optimization
 	m_mEntityArray[GetEntityIndex("Player")]->Update(0.15f);
-
 }
 void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID, uint a_nEntityType)
 {
