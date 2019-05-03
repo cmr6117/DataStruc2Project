@@ -19,6 +19,7 @@ class MyEntityManager
 	static MyEntityManager* m_pInstance; // Singleton pointer
 
 	uint m_playerRadius = 5; //radius around player that will repel other entities
+	uint m_numSheep = 20; //number of sheep, need to track in case we add some for spatial optimization testing
 	std::vector<uint> closestSheepIndex; //record the closest sheep to the wolves
 	std::vector<vector3> closestSheepDirection; //record the the direction the wolf is going in
 
@@ -302,6 +303,7 @@ public:
 	-	String a_sUniqueID -> ID of the MyEntity
 	OUTPUT: ---
 	*/
+	void SetSheepNum(uint newNum);
 	void SetMass(float a_fMass, String a_sUniqueID);
 	/*
 	USAGE: Sets the mass of the specified entity

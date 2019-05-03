@@ -487,6 +487,8 @@ void Simplex::MyEntityManager::SetPosition(vector3 a_v3Position, uint a_uIndex)
 
     return;
 }
+void Simplex::MyEntityManager::SetSheepNum(uint newNum) { m_numSheep = newNum; }
+
 void Simplex::MyEntityManager::SetMass(float a_fMass, String a_sUniqueID)
 {
     //Get the entity
@@ -544,30 +546,8 @@ void Simplex::MyEntityManager::EntityPhysics()
 	vector3 directionVec;
 	String currentDir = "";
 
-	//check wolves
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	//find the distance/direction vector
-	//	entityIndex = GetEntityIndex("wolves_" + std::to_string(i));
-	//	entityPos = GetEntity(entityIndex)->GetPosition();
-	//	directionVec = entityPos - playerPos;
-	//	directionVec.y = 0.0f;
-	//	//check for collision of radius
-	//	if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
-	//	{
-	//		uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-	//		if (distanceBetween < m_playerRadius)
-	//		{
-	//			//normalize the direction vector
-	//			directionVec = directionVec / (distanceBetween * 300.0f);
-	//			//apply the force
-	//			m_mEntityArray[entityIndex]->ApplyForce(directionVec);
-	//		}
-	//	}
-	//}
-
 	//check sheep
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < m_numSheep; i++)
 	{
 		//find the distance/direction vector
 		entityIndex = GetEntityIndex("sheep_" + std::to_string(i));
@@ -585,6 +565,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 				//normalize the direction vector distanceBetween/m_playerRadius
 				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
+				//Set a direction for use in fence collision
 				if (directionVec.z > 0) { currentDir += "South"; }
 				else { currentDir += "North"; }
 				if (directionVec.x > 0) { currentDir += "East"; }
@@ -632,6 +613,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 					//normalize the direction vector distanceBetween/m_playerRadius
 					directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
+					//set a direction for use in fence collision
 					if (directionVec.z > 0) { currentDir += "South"; }
 					else { currentDir += "North"; }
 					if (directionVec.x > 0) { currentDir += "East"; }

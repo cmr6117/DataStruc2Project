@@ -420,7 +420,7 @@ void Application::ProcessKeyboard(void)
 
     float step = m_fPlayerSpeed * m_fDeltaTime;
 	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->step = step;
-	m_v3PlayerPos = m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->GetPosition();
+	m_v3PlayerPos = ZERO_V3;
 	String currentDir = "";
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -428,7 +428,7 @@ void Application::ProcessKeyboard(void)
         // translate player in -z, move them north
 		m_v3PlayerPos.z -= step;
 		currentDir += "North";
-		fDirection = (float)directions::North;
+		//fDirection = (float)directions::North;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -436,15 +436,15 @@ void Application::ProcessKeyboard(void)
 		// translate player in z, move them south
 		m_v3PlayerPos.z += step;
 		currentDir += "South";
-		fDirection = (float)directions::South;
+		//fDirection = (float)directions::South;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
 		// translate player in -x, move them west
-		m_v3PlayerPos.x -= step; 
+		m_v3PlayerPos.x -= step;
 		currentDir += "West";
-		fDirection = (float)directions::West;
+		//fDirection = (float)directions::West;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -452,11 +452,11 @@ void Application::ProcessKeyboard(void)
 		// translate player in x, move them east
 		m_v3PlayerPos.x += step;
 		currentDir += "East";
-		fDirection = (float)directions::East;
+		//fDirection = (float)directions::East;
     }
 
-	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetPosition(m_v3PlayerPos);
-	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetModelMatrix(glm::translate(IDENTITY_M4, m_v3PlayerPos));
+	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->ApplyForce(m_v3PlayerPos);
+	//m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetModelMatrix(glm::translate(IDENTITY_M4, m_v3PlayerPos));
 	m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Player"))->SetDirection(currentDir);
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -470,6 +470,12 @@ void Application::ProcessKeyboard(void)
             std::cout << "\nBarked!";
         }
     }
+
+	//Spawn a random sheep, used for testing Spatial Optimization
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+	{
+		SpawnRandomSheep();
+	}
 
 #pragma endregion
 
