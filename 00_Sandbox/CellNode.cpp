@@ -22,15 +22,25 @@ void Simplex::CellNode::HandleCollisions()
     if (EntitiesInside.size() < 2)
         return;
 
-    for (uint i = 0; i < EntitiesInside.size(); i++) 
+    for (uint i = 0; i < EntitiesInside.size(); i++) //
     {
         MyEntity* current = EntitiesInside[i];
+		std::string tester = current->GetUniqueID();
 
-        for (uint j = 0; j < EntitiesInside.size(); j++)
+		if (current->GetUniqueID().compare(0,7,"wolves_") == 0)
+		{
+			uint breakHere;
+		}
+		else if (current->GetUniqueID().find("sheep_") == 0)
+		{
+			uint breakHere;
+		}
+
+        for (uint j = i + 1; j < EntitiesInside.size(); j++)
         {
             // ignore self
-            if (i == j)
-                continue;
+            //if (i == j)
+            //    continue;
 
             MyEntity* other = EntitiesInside[j];
 
