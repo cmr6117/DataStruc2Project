@@ -44,8 +44,10 @@ class MyEntity
 	vector3 lastPos = ZERO_V3;
 
 public:
-	float step = 0.f;
-	bool needReassign = true;
+	float step = 0.f; //var to hold movement step between frames
+	bool needReassign = true; //flag to reassign itself to new cell
+	bool m_activeSheep = false; //only true for uneaten sheep;
+
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:
@@ -305,6 +307,9 @@ public:
 
 	//Assign entity to local list of cell it's occupying
 	void AssignToCell();
+
+	//Checks if entity is inside the pen
+	bool IsInPen();
 
 
 private:

@@ -140,6 +140,8 @@ void Application::Update(void)
 
     //Add objects to render list
     m_pEntityMngr->AddEntityToRenderList(-1, true);
+
+	m_iSheepSaved = m_pEntityMngr->GetSheepRescued();
 }
 
 void Application::Display(void)

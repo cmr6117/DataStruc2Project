@@ -363,6 +363,12 @@ void Simplex::MyEntity::Update(float getMax)
 	{
 		AssignToCell();
 	}
+
+	//If the entity is a sheep, check if it's scored
+	if (m_nEntityType == 0 && m_activeSheep)
+	{
+		
+	}
 }
 void Simplex::MyEntity::ResolveCollision(MyEntity* a_pOther)
 {
@@ -475,4 +481,18 @@ void Simplex::MyEntity::AssignToCell()
 
 		currentColumn++;
 	}
+}
+
+//returns true if entity is within the bounds of the pen
+bool Simplex::MyEntity::IsInPen()
+{
+	if (GetPosition().x > -21 && GetPosition().x < -9)
+	{
+		if (GetPosition().z > -4 && GetPosition().z < 10)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

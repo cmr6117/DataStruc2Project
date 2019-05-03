@@ -551,33 +551,55 @@ void Simplex::MyEntityManager::EntityPhysics()
 	{
 		//find the distance/direction vector
 		entityIndex = GetEntityIndex("sheep_" + std::to_string(i));
-		entityPos = GetEntity(entityIndex)->GetPosition();
-		directionVec = entityPos - playerPos;
-		directionVec.y = 0.0f;
-		currentDir = "";
 
-		//check for collision of radius
-		if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
+		//If the sheep isn't in the pen, proceed with physics calculation
+		if (!GetEntity(entityIndex)->IsInPen())
 		{
-			uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
-			if (distanceBetween < m_playerRadius)
+			entityPos = GetEntity(entityIndex)->GetPosition();
+			directionVec = entityPos - playerPos;
+			directionVec.y = 0.0f;
+			currentDir = "";
+
+			//check for collision of radius
+			if (directionVec.x < m_playerRadius && directionVec.z < m_playerRadius)
 			{
-				//normalize the direction vector distanceBetween/m_playerRadius
-				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+				uint distanceBetween = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
+				if (distanceBetween < m_playerRadius)
+				{
+					//normalize the direction vector distanceBetween/m_playerRadius
+					directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
 
-				//Set a direction for use in fence collision
-				if (directionVec.z > 0) { currentDir += "South"; }
-				else { currentDir += "North"; }
-				if (directionVec.x > 0) { currentDir += "East"; }
-				else { currentDir += "West"; }
+					//Set a direction for use in fence collision
+					if (directionVec.z > 0) { currentDir += "South"; }
+					else { currentDir += "North"; }
+					if (directionVec.x > 0) { currentDir += "East"; }
+					else { currentDir += "West"; }
 
-				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
-				GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
+					GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->SetDirection(currentDir);
+					GetEntity(GetEntityIndex("sheep_" + std::to_string(i)))->step = 0.3f;
 
-				//apply the force
-				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
+					//apply the force
+					m_mEntityArray[entityIndex]->ApplyForce(directionVec * 10);
+				}
 			}
 		}
+		else
+		{
+			bool alreadyAdded = false;
+			for (int i = 0; i < RescuedSheep.size(); i++)
+			{
+				if (RescuedSheep[i]->GetUniqueID() == m_mEntityArray[entityIndex]->GetUniqueID())
+				{
+					alreadyAdded = true;
+				}
+			}
+			if (!alreadyAdded)
+			{
+				RescuedSheep.push_back(m_mEntityArray[entityIndex]);
+				m_RescuedSheep = RescuedSheep.size();
+			}
+		}
+
 		m_mEntityArray[entityIndex]->Update(0.06f);
 	}
 }
@@ -671,4 +693,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 
 	//check sheep
 }
+
+uint Simplex::MyEntityManager::GetSheepRescued() { return m_RescuedSheep; }
+
 

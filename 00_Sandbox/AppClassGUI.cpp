@@ -154,7 +154,7 @@ void Application::DrawGUI(void)
 		ImGui::SetNextWindowSize(ImVec2(315, 42), ImGuiSetCond_FirstUseEver);
 
 		String sAbout = m_pSystem->GetAppName() + " - About";
-        String sScore = "Score: " + std::to_string(m_iSheepSaved);
+        String sScore = "Sheep Saved: " + std::to_string(m_iSheepSaved);
 
 		ImGui::Begin(sAbout.c_str(), (bool*)0, window_flags);
 		{
@@ -169,8 +169,18 @@ void Application::DrawGUI(void)
             ImGui::TextWrapped("    Temporarily scare wolves away by barking near them!");
             ImGui::Separator();
             ImGui::Text("Controls:\n");
-            ImGui::Text("    Movment: WASD");
-            ImGui::Text("    Bark: Space");
+            ImGui::Text("    Movement: WASD");
+            //ImGui::Text("    Bark: Space");
+			ImGui::Separator();
+			ImGui::Text("Debug Options:\n");
+			ImGui::Text("    Tab: Spawn Sheep");
+			ImGui::Text("    G:   Toggle Spatial Optimization");
+			ImGui::Separator();
+			ImGui::Text("Programmers:\n");
+			ImGui::Text("    Christian Rego");
+			ImGui::Text("    Michael SanGiovanni");
+			ImGui::Text("    Nick Visconti");
+			ImGui::Text("    Rowan Waring");
             ImGui::Separator();
             ImGui::Text(sScore.c_str());
 		}
@@ -181,7 +191,7 @@ void Application::DrawGUI(void)
 	if (m_bGUI_Main)
 	{
 		static float f = 0.0f;
-		ImGui::SetNextWindowPos(ImVec2(45, 10), ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowPos(ImVec2(800, 10), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(ImVec2(315, 107), ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowCollapsed(false, ImGuiSetCond_FirstUseEver);
 		String sWindowName = m_pSystem->GetAppName() + " - Main";
