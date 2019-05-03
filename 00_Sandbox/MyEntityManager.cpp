@@ -563,7 +563,9 @@ void Simplex::MyEntityManager::EntityPhysics()
 			if (distanceBetween < m_playerRadius)
 			{
 				//normalize the direction vector distanceBetween/m_playerRadius
-				directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+				//directionVec = directionVec / (distanceBetween * (300.0f * distanceBetween / m_playerRadius));
+				directionVec = glm::normalize(directionVec);
+				
 
 				//Set a direction for use in fence collision
 				if (directionVec.z > 0) { currentDir += "South"; }
@@ -642,7 +644,7 @@ void Simplex::MyEntityManager::WolfUpdate()
 				uint sheepIndex = GetEntityIndex("sheep_" + std::to_string(j));
 				vector3 oldSheepDirection = GetEntity(closestSheepIndex[i])->GetPosition() - entityPos;
 				oldSheepDirection.y = 0.0f;
-				directionVec = GetEntity(sheepIndex)->GetPosition(); -entityPos;
+				directionVec = GetEntity(sheepIndex)->GetPosition() - entityPos;
 				directionVec.y = 0.0f;
 				float newSheepDistance = sqrt(pow(directionVec.x, 2.0f) + pow(directionVec.z, 2.0f));
 				if (newSheepDistance < sqrt(pow(oldSheepDirection.x, 2.0f) + pow(oldSheepDirection.z, 2.0f)))
@@ -651,12 +653,10 @@ void Simplex::MyEntityManager::WolfUpdate()
 					oldSheepDirection = directionVec;
 				}
 				//push sheep away if wolf gets close enough
-				if (newSheepDistance < 5.0f)
+				if (newSheepDistance < sheepScare)
 				{
 					//apply the force
-					vector3 pushSheep = glm::normalize(GetEntity(sheepIndex)->GetPosition() - entityPos) * 0.1f;
-					pushSheep.y = 0.0f;
-					m_mEntityArray[sheepIndex]->ApplyForce(pushSheep);
+					m_mEntityArray[sheepIndex]->ApplyForce(glm::normalize(directionVec));
 				}
 			}
 		}
