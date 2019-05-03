@@ -190,7 +190,7 @@ void Simplex::MyEntityManager::Update(bool UsingGrid)
                 }
             }
             //Update each entity
-            m_mEntityArray[i]->Update();
+            m_mEntityArray[i]->Update(0.1f);
         }
     }
     else 
@@ -198,7 +198,7 @@ void Simplex::MyEntityManager::Update(bool UsingGrid)
         for (uint i = 0; i < m_uEntityCount; i++)
         {
             //Update each entity
-            m_mEntityArray[i]->Update();
+            m_mEntityArray[i]->Update(0.1f);
         }
     }
 
@@ -597,6 +597,7 @@ void Simplex::MyEntityManager::EntityPhysics()
 				m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 			}
 		}
+		m_mEntityArray[entityIndex]->Update(0.05f);
 	}
 }
 
@@ -675,8 +676,9 @@ void Simplex::MyEntityManager::WolfUpdate()
 		directionVec.y = 0.0f;
 		m_mEntityArray[entityIndex]->ApplyForce(directionVec);
 		directionVec = ZERO_V3;
+		m_mEntityArray[entityIndex]->Update(0.05f);
 	}
 
-	//check sheep
+	
 }
 

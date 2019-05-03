@@ -22,12 +22,8 @@ void Simplex::CellNode::HandleCollisions()
     {
         MyEntity* current = EntitiesInside[i];
 
-        for (uint j = 0; j < EntitiesInside.size(); j++)
+        for (uint j = i + 1; j < EntitiesInside.size(); j++)
         {
-            // ignore self
-            if (i == j)
-                continue;
-
             MyEntity* other = EntitiesInside[j];
 
             if (current->IsColliding(other))
